@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
 //            DataInputStream dis = new DataInputStream(fis);
 //            String response = dis.readUTF();
 //
-////            Lay thong tin bac si
+//            Lay thong tin bac si
 //            if (response != null) {
 //                doctorJSON = new JSONObject(response);
 //            } else {
@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity
 //                    if (doctorInfo != null) {
 //                        doctorJSON = new JSONObject(doctorInfo);
 //                        dos.writeUTF(doctorInfo);
+//                    }else{
+//                        Intent loginIntent = new Intent(this, LoginActivity.class);
+//                        startActivity(loginIntent);
+//                        Intent mainIntent = new Intent(this, MainActivity.class);
+//                        stopService(mainIntent);
 //                    }
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
