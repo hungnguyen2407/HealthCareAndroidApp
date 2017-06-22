@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button registerButton = (Button) findViewById(R.id.submit_register_button);
+        Button registerButton = (Button) findViewById(R.id.to_register_form_button);
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

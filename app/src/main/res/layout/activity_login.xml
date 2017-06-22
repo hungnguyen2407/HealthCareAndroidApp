@@ -73,7 +73,7 @@
                 android:background="@android:color/holo_blue_light" />
 
             <Button
-                android:id="@+id/submit_register_button"
+                android:id="@+id/to_register_form_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

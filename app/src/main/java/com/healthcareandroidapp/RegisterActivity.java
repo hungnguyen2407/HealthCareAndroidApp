@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -46,13 +47,29 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        Button registerButton = (Button) findViewById(R.id.btnSubmit_SignUp);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Thuc hien qua trinh gui du lieu dang ki len server
+                register();
+            }
+        });
 
-
+        Button loginButton = (Button) findViewById(R.id.btnReturnLogin);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Quay tro lai giao dien dang nhap
+                login();
+            }
+        });
         registerForm = findViewById(R.id.register_form);
         progressBar = findViewById(R.id.register_progress);
         progressBar.setVisibility(View.GONE);
 
     }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -96,6 +113,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 populateAutoComplete();
             }
         }
+    }
+    private void login() {
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 
     public void register() {
@@ -345,6 +366,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
 
     }
+
 
     private void goLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
