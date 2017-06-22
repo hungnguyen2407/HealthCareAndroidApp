@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     //Check username is valid
     private boolean isUserNameValid(String userName) {
 
-        return userName.length() > 8;
+        return userName.length() >= 6;
     }
 
     private boolean isPasswordValid(String password) {
