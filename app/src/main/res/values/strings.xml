@@ -31,6 +31,7 @@
     <string name="register_clinic_name">Tên phòng khám</string>
     <string name="register_clinic_address">Địa chỉ phòng khám</string>
     <string name="register_speciality">Chuyên ngành</string>
+    <string name="register_degree">Bằng cấp</string>
     <string name="register_experience">Kinh nghiệm</string>
     <string name="register_doctor_address">Địa chỉ thường trú</string>
     <string name="register_return_login_action">Đăng Nhập</string>
@@ -39,6 +40,8 @@
     <string name="register_error_field_required">Thông tin còn thiếu</string>
     <string name="register_error_invalid_password">Mật khẩu cần lớn hơn 4 kí tự</string>
     <string name="register_error_invalid_confirm_password">Mật khẩu không trùng</string>
+    <string name="register_error_invalid_phone">Số điện thoại không hợp lệ</string>
+    <string name="register_error_invalid_experience">Năm kinh nghiệm không hợp lệ</string>
 
 
     <!-- String dùng cho sign in UI -->
