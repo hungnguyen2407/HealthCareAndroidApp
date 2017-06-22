@@ -166,8 +166,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid passWord, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             this.password.setError(getString(R.string.login_error_invalid_password));
+            focusView = this.password;
+            cancel = true;
+        } else if(!isPasswordValid(password))
+        {
+            this.password.setError(getString(R.string.login_error_incorrect_password));
             focusView = this.password;
             cancel = true;
         }

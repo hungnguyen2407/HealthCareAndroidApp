@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity
         }
         try {
             TextView header = (TextView) findViewById(R.id.header);
-            header.setText("Xin chào bác sĩ " + doctorJSON.getString("nameDoctor") + ".\nThông tin bác sĩ:");
+            header.setText("Xin chào bác sĩ \n" + doctorJSON.getString("nameDoctor") + ".\n");
             TextView homeContent = (TextView) findViewById(R.id.homeContent);
-            homeContent.setText("Họ tên: " + doctorJSON.getString("nameDoctor") + "\nSố điện thoại: " + doctorJSON.getString("phone") + "\nĐịa chỉ: " + doctorJSON.getString("address") + "\nPhòng khám: " + doctorJSON.getString("wordspace"));
+            homeContent.setText("Thông tin bác sĩ:\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSố điện thoại: " + doctorJSON.getString("phone") + "\nĐịa chỉ: " + doctorJSON.getString("address"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -166,6 +166,8 @@ public class MainActivity extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            //Thay content cho content_nav
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new WorkScheduleFragment()).commit();
         }
 
@@ -196,7 +198,7 @@ public class MainActivity extends AppCompatActivity
         //Xu ly su kien nav trang chu
         else if (id == R.id.nav_home) {
             header.setText("Thông tin bác sĩ.");
-            header.setVisibility(View.VISIBLE);
+            header.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
             contentFrame.setVisibility(View.GONE);
         }

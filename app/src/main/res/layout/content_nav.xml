@@ -13,8 +13,9 @@
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="Xin chào !"/>
+        android:textSize="20dp"
+        android:text="Xin chào !"
+        android:textColor="@android:color/holo_red_light"/>
 
 
     <TextView
