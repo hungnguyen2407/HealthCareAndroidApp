@@ -45,7 +45,7 @@
     <string name="login_user_name">Tài khoản</string>
     <string name="login_password">Mật khẩu</string>
     <string name="login_submit_action">Đăng Nhập</string>
-    <string name="login_error_invalid_user_name">Tên đăng nhập phải lớn hơn 8 kí tự</string>
+    <string name="login_error_invalid_user_name">Tên đăng nhập phải lớn hơn 6 kí tự</string>
     <string name="login_error_invalid_password">Mật khẩu phải lớn hơn 4 kí tự</string>
     <string name="login_error_incorrect_password">Sai mật khẩu</string>
     <string name="error_field_required">Thông tin còn thiếu</string>
