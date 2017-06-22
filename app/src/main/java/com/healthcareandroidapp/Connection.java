@@ -21,8 +21,8 @@ import java.net.URL;
 public class Connection{
     //Gia tri dia chi cua may chu web service
     //TODO: Cho dia chi may chu that
-    private static String host = "http://10.0.2.2:8080/HealthCare/rest";
-//    private static String host = "http://healthcare21617.azurewebsites.net/rest";
+//    private static String host = "http://10.0.2.2:8080/HealthCare/rest";
+    private static String host = "http://healthcare21617.azurewebsites.net/rest";
 
     public static JSONObject getWorkSchedule(String doctorID)
     {
