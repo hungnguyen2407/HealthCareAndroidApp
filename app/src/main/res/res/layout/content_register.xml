@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.healthcareandroidapp.RegisterActivity" >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <ProgressBar
+            android:id="@+id/register_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp"
+            android:background="@android:color/holo_blue_dark"
+            android:contentDescription="@string/sign_up_image"
+            android:src="@drawable/header" />
+
+        <TextView
+            android:id="@+id/tvDangKy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:text="@string/register_header"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lbName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/lbUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_user_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtUsername_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:singleLine="true" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_password"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtPassword_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_confirm_password"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtConfirmPassword_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_email"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtEmail_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_phone"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtPhone_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="phone" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_birth_day"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtDob_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_passport"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtPassport_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_clinic_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtClinicName_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPostalAddress" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_clinic_address"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtClinic_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPostalAddress" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_speciality"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtSpecialty_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_experience"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtExperience_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/form_control"
+            android:text="@string/register_doctor_address"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bluewish" />
+
+        <EditText
+            android:id="@+id/edtAddress_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+
+        <Button
+            android:id="@+id/btnSubmit_SignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/bluewish"
+            android:text="@string/submit_register_action"
+            android:textColor="@color/white"
+            android:textColorLink="@color/black"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnReturnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/orangewish"
+            android:text="@string/register_return_login_action"
+            android:textColor="@color/white"
+            android:textColorLink="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</ScrollView>
