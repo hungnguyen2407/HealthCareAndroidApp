@@ -88,12 +88,10 @@ public class Connection {
     }
 
 
-    public static JSONObject register(String userName, String password, String name, String email, String clinicName, String clinicAddress, String speciality, String degree, String experience, String doctorAddress, String phone, String passport) {
+    public static JSONObject register(Doctor doctor) {
 
         JSONObject doctorJSON = null;
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
-        Date date = new Date();
-        Doctor doctor = new Doctor(new Clinic(clinicAddress, clinicName), new Specialty(speciality), userName, name, password, phone, passport, degree, Integer.parseInt(experience), doctorAddress, date, false);
+
         try {
             doctorJSON = new JSONObject(doctor.toJson());
             HttpURLConnection urlConnection = null;

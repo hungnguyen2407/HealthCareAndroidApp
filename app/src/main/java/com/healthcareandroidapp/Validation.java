@@ -25,7 +25,7 @@ public class Validation {
 
     public static boolean isEmailValid(String email) {
         if (email != null) {
-            Pattern p = Pattern.compile("^[A-Za-z].*?@gmail\\.com$");
+            Pattern p = Pattern.compile("^[A-Za-z].*?@*\\.*");
             Matcher m = p.matcher(email);
             return m.find();
         }

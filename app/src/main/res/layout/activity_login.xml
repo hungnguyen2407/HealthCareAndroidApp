@@ -11,13 +11,21 @@
     tools:context="com.healthcareandroidapp.LoginActivity">
 
     <!-- Login progress -->
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Đăng Nhập"
+        android:textSize="30dp" />
+
     <ProgressBar
         android:id="@+id/sign_in_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        />
+        android:layout_margin="50dp" />
 
     <ScrollView
         android:id="@+id/sign_in_form"
@@ -67,10 +75,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@android:color/holo_blue_light"
                 android:text="@string/login_submit_action"
-                android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:background="@android:color/holo_blue_light" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/to_register_form_button"

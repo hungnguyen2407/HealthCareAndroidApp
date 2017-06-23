@@ -3,7 +3,9 @@ package com.healthcareandroidapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -12,6 +14,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,8 +25,13 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import entity.Doctor;
 
 public class RegisterActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
@@ -35,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
      */
     private UserRegisterTask registerTask = null;
     private View progressBar, registerForm;
-    private TextView userNameView, passwordView, confirmPasswordView, nameView, clinicNameView, clinicAddressView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView;
+    private TextView userNameView, passwordView, confirmPasswordView, nameView, clinicNameView, clinicAddressView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateView;
     private JSONObject doctorJSON = null;
 
     @Override
@@ -76,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         doctorAddressView = (TextView) findViewById(R.id.register_doctor_address);
         phoneView = (TextView) findViewById(R.id.register_phone);
         passportView = (TextView) findViewById(R.id.register_passport);
+        birthDateView = (TextView) findViewById(R.id.register_birth_date);
         registerForm = findViewById(R.id.register_form);
         progressBar = findViewById(R.id.register_progress);
         progressBar.setVisibility(View.GONE);
@@ -133,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
     }
 
     public void register() {
-        progressBar.setVisibility(View.VISIBLE);
 
         if (registerTask != null) {
             return;
@@ -153,6 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         doctorAddressView.setError(null);
         phoneView.setError(null);
         passportView.setError(null);
+        birthDateView.setError(null);
 
         // Store values at the time of the login attempt.
         String userName = this.userNameView.getText().toString();
@@ -168,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         String doctorAddress = this.doctorAddressView.getText().toString();
         String phone = this.phoneView.getText().toString();
         String passport = this.passportView.getText().toString();
+        String birthDate = this.birthDateView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -192,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.confirmPasswordView.setError(getString(R.string.register_error_invalid_password));
             focusView = this.confirmPasswordView;
             cancel = true;
-        } else if (!confirmPassword.equals(confirmPassword)) {
+        } else if (!confirmPassword.equals(password)) {
             this.confirmPasswordView.setError(getString(R.string.register_error_invalid_confirm_password));
             focusView = this.confirmPasswordView;
             cancel = true;
@@ -260,8 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.experienceView.setError(getString(R.string.register_error_field_required));
             focusView = this.experienceView;
             cancel = true;
-        } else if(!Validation.isExperienceValid(experience))
-        {
+        } else if (!Validation.isExperienceValid(experience)) {
             this.experienceView.setError(getString(R.string.register_error_invalid_experience));
             focusView = this.experienceView;
             cancel = true;
@@ -291,6 +301,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             focusView = this.passwordView;
             cancel = true;
         }
+
+        //Kiem tra dinh dang ngay sinh
+        if (TextUtils.isEmpty(birthDate)) {
+            this.birthDateView.setError(getString(R.string.register_error_field_required));
+            focusView = this.birthDateView;
+            cancel = true;
+        }
         //Kiem tra xem co loi xay ra trong form dang ki
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -300,7 +317,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            registerTask = new UserRegisterTask(userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport);
+            registerTask = new UserRegisterTask(userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
             registerTask.execute((Void) null);
         }
     }
@@ -358,9 +375,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport;
+        private final String userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
 
-        UserRegisterTask(String userName, String password, String name, String clinicName, String clinicAddress, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport) {
+        UserRegisterTask(String userName, String password, String name, String clinicName, String clinicAddress, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
             this.userName = userName;
             this.password = password;
             this.name = name;
@@ -373,15 +390,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.doctorAddress = doctorAddress;
             this.phone = phone;
             this.passport = passport;
+            this.birthDate = birthDate;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            //TODO:Xu ly dang nhap voi server
-
-            Connection.register(userName, password, name, email, clinicName, clinicAddress, speciality, degree, experience, doctorAddress, phone, passport);
-            return false;
+            //TODO:Xy ly dang ki tai khoan
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
+            Date date = new Date();
+            Doctor doctor = new Doctor();
+            Connection.register(doctor);
+            return true;
         }
 
         @Override
@@ -390,7 +410,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
-                goLoginActivity();
+
                 finish();
 
             } else {
@@ -408,9 +428,26 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
     }
 
 
-    private void goLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("messeges", "Đăng kí thành công. Khi tài khoản được sẽ được thông báo qua emailView.");
-        startActivity(intent);
+    public static class RegisterStatusDialogFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.register_success_messages)
+                    .setPositiveButton(R.string.register_return_login_action, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(null, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton(R.string.register_close_dialog, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }

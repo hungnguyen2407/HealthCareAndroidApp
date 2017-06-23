@@ -61,10 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent intent = getIntent();
-        String messeges = intent.getStringExtra("messeges");
 
-        Toast.makeText(this, messeges, Toast.LENGTH_LONG);
 
         // Set up the login form.
         userName = (AutoCompleteTextView) findViewById(R.id.username);
@@ -148,7 +145,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void login() {
-        progressBar.setVisibility(View.VISIBLE);
 
         if (authenTask != null) {
             return;
@@ -166,13 +162,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid passWord, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             this.password.setError(getString(R.string.login_error_invalid_password));
-            focusView = this.password;
-            cancel = true;
-        } else if(!isPasswordValid(password))
-        {
-            this.password.setError(getString(R.string.login_error_incorrect_password));
             focusView = this.password;
             cancel = true;
         }

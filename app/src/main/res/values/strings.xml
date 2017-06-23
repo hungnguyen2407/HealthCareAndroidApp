@@ -35,7 +35,7 @@
     <string name="register_degree">Bằng cấp</string>
     <string name="register_experience">Kinh nghiệm</string>
     <string name="register_doctor_address">Địa chỉ thường trú</string>
-    <string name="register_return_login_action">Đăng Nhập</string>
+    <string name="register_return_login_action">Quay Lại Đăng Nhập</string>
     <string name="register_error_invalid_user_name">Tên tài khoản phải từ 6 kí tự trở lên</string>
     <string name="register_error_invalid_email">Email không hợp lệ</string>
     <string name="register_error_field_required">Thông tin còn thiếu</string>
@@ -43,7 +43,8 @@
     <string name="register_error_invalid_confirm_password">Mật khẩu không trùng</string>
     <string name="register_error_invalid_phone">Số điện thoại không hợp lệ</string>
     <string name="register_error_invalid_experience">Năm kinh nghiệm không hợp lệ</string>
-
+    <string name="register_success_messages">Đăng kí tài khoản thành công. Thông tin sẽ được kiểm chứng và sẽ được thông báo qua email khi tài khoản được kích hoạt.</string>
+    <string name="register_close_dialog">Đóng</string>
     <!--String dùng cho setting UI-->
     <string name="setting_header">Cài Đặt</string>
     <string name="setting_change_info_action">Chỉnh sửa thông tin cá nhân</string>
@@ -67,8 +68,8 @@
     <string name="login_user_name">Tài khoản</string>
     <string name="login_password">Mật khẩu</string>
     <string name="login_submit_action">Đăng Nhập</string>
-    <string name="login_error_invalid_user_name">Tên đăng nhập phải lớn hơn 6 kí tự</string>
-    <string name="login_error_invalid_password">Mật khẩu phải lớn hơn 4 kí tự</string>
+    <string name="login_error_invalid_user_name">Tên đăng nhập phải từ 6 kí tự trở lên</string>
+    <string name="login_error_invalid_password">Mật khẩu phải từ 4 kí tự trở lên</string>
     <string name="login_error_incorrect_password">Sai mật khẩu</string>
     <string name="error_field_required">Thông tin còn thiếu</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
