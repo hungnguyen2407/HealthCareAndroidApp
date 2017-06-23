@@ -46,7 +46,7 @@ public class Connection {
                 if (line != null) response += line;
             } while (line != null);
 
-            workScheduleJSON = new JSONObject("{" + response + "}");
+            workScheduleJSON = new JSONObject(response);
 
             urlConnection.disconnect();
         } catch (IOException e) {
@@ -98,16 +98,8 @@ public class Connection {
             doctorJSON = new JSONObject(doctor.toJson());
             HttpURLConnection urlConnection = null;
             URL url = new URL(host + "/doctor/register/"+ doctor.toJson());
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line, response = "";
-            do {
-                line = bufferedReader.readLine();
-                if (line != null) response += line;
-            } while (line != null);
 
-            Log.v("result", response);
+            urlConnection = (HttpURLConnection) url.openConnection();
 
             urlConnection.disconnect();
 

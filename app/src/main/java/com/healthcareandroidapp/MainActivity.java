@@ -3,6 +3,7 @@ package com.healthcareandroidapp;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +18,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -27,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import entity.Schedules;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -167,7 +172,20 @@ public class MainActivity extends AppCompatActivity
             homeContent.setVisibility(View.GONE);
             try {
                 WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorJSON.getString("idDoctor"));
-                workScheduleTask.equals((Void) null);
+                workScheduleTask.execute((Void) null);
+
+                TextView workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
+                JSONObject workScheduleObject;
+                JSONArray workScheduleArray = workScheduleJSON.getJSONArray("scheduleList");
+                for (int i = 0; i < workScheduleArray.length(); i++) {
+                    workScheduleObject = (JSONObject) workScheduleArray.get(i);
+                    Schedules schedule = new Schedules(workScheduleObject.getString("dates"), Integer.parseInt(workScheduleObject.getString("startTime")), Integer.parseInt(workScheduleObject.getString("stopTime")), workScheduleObject.getString("workspace"));
+                    workScheduleTV.setText("Thứ " + schedule.getDates());
+                    workScheduleTV.setText("Giờ làm việc từ " + schedule.getStartTimeClock() + " đến " + schedule.getStopTimeClock());
+                    workScheduleTV.setText("Phòng làm việc " + schedule.getWorkspace());
+
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
