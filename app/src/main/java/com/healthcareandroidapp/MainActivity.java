@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import entity.Doctor;
 import entity.Schedules;
 
 
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     private JSONObject doctorJSON, workScheduleJSON;
     private String fileName = "doctorInfo";
-
+    private Doctor doctor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         }
         try {
             doctorJSON = new JSONObject(doctorInfo);
+            doctor = new Doctor(); //TODO: lay du lieu tu JSON vao doi tuong doctor
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -223,105 +227,16 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_setting) {
             header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
-            settingHandle();
+
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void settingHandle() {
-        Button btnChangePassword = (Button) findViewById(R.id.btn_change_password);
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView tvNewPassword = (TextView) findViewById(R.id.tvNewPassword);
-                tvNewPassword.setVisibility(View.VISIBLE);
 
-                EditText edtNewPassword = (EditText) findViewById(R.id.edtNewPassword);
-                edtNewPassword.setVisibility(View.VISIBLE);
-
-                TextView tvConfirmNewPassword = (TextView) findViewById(R.id.tvConfirmNewPassword);
-                tvConfirmNewPassword.setVisibility(View.VISIBLE);
-
-                EditText edtConfirmNewPassword = (EditText) findViewById(R.id.edtConfirmNewPassword);
-                edtConfirmNewPassword.setVisibility(View.VISIBLE);
-
-                TextView tvOldPassword = (TextView) findViewById(R.id.tvOldPassword);
-                tvOldPassword.setVisibility(View.VISIBLE);
-
-                EditText edtOldPassword = (EditText) findViewById(R.id.edtOldPassword);
-                edtOldPassword.setVisibility(View.VISIBLE);
-            }
-        });
-
-        Button btnConfirmChangePassword = (Button) findViewById(R.id.btn_confirm_change_password);
-        btnConfirmChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText edtNewPassword = (EditText) findViewById(R.id.edtNewPassword);
-                String newPassword = edtNewPassword.getText().toString();
-                EditText edtConfirmNewPassword = (EditText) findViewById(R.id.edtConfirmNewPassword);
-                String confirmNewPassword = edtNewPassword.getText().toString();
-                EditText edtOldPassword = (EditText) findViewById(R.id.edtOldPassword);
-                String oldPassword = edtNewPassword.getText().toString();
-
-                EditText focusEdit = null;
-                boolean cancel = false;
-                if (TextUtils.isEmpty(oldPassword)) {
-                    edtOldPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtOldPassword;
-                    cancel = true;
-
-                } else if (!Validation.isPasswordValid(oldPassword)) {
-                    edtOldPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtOldPassword;
-                    cancel = true;
-                }
-
-                if (TextUtils.isEmpty(newPassword)) {
-                    edtNewPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtNewPassword;
-                    cancel = true;
-                } else if (!Validation.isPasswordValid(newPassword)) {
-                    edtNewPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtNewPassword;
-                    cancel = true;
-                }
-
-                if (TextUtils.isEmpty(confirmNewPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                } else if (!Validation.isPasswordValid(confirmNewPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                } else if (!confirmNewPassword.equals(newPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_confirm_password));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                }
-
-            }
-        });
-
-        Button btnConfirmChangeInfo = (Button) findViewById(R.id.btn_confirm_change_info);
-        btnConfirmChangeInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText edtName = (EditText) findViewById(R.id.edtName);
-                EditText edtEmail = (EditText) findViewById(R.id.edtEmail);
-                EditText edtPhone = (EditText) findViewById(R.id.edtPhone);
-                EditText edtAddress = (EditText) findViewById(R.id.edtAddress);
-                EditText edtDegree = (EditText) findViewById(R.id.edtDegree);
-                EditText edtExperience = (EditText) findViewById(R.id.edtExperience);
-                EditText edtPassport = (EditText) findViewById(R.id.edtPassport);
-            }
-        });
-
-    }
 
 
     public class WorkScheduleTask extends AsyncTask<Void, Void, Boolean> {
@@ -367,7 +282,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return Connection.changePassword(oldPassword, newPassword);
+            return Connection.changeInfo(doctor);
 
         }
 
@@ -391,7 +306,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return Connection.changeInfo(doctorInfo);
+            return Connection.changeInfo(doctor);
         }
 
         @Override

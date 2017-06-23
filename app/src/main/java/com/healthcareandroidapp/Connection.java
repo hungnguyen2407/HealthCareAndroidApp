@@ -97,7 +97,7 @@ public class Connection {
         try {
             doctorJSON = new JSONObject(doctor.toJson());
             HttpURLConnection urlConnection = null;
-            URL url = new URL(host + "/doctor/register/"+ doctor.toJson());
+            URL url = new URL(host + "/doctor/register/" + doctor.toJson());
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -120,15 +120,31 @@ public class Connection {
         return doctorJSON;
     }
 
-    public static boolean changeInfo(String doctorInfo)
-    {
+    public static boolean changeInfo(Doctor doctor) {
+        //TODO
 
-        return false;
+        try {
+            HttpURLConnection urlConnection = null;
+            URL url = new URL(host + "/doctor/update/" + doctor.toJson());
+            urlConnection = (HttpURLConnection) url.openConnection();
+//            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line, response = "";
+//            do {
+//                line = bufferedReader.readLine();
+//                if (line != null) response += line;
+//            } while (line != null);
+
+
+            urlConnection.disconnect();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return true;
     }
 
-    public static boolean changePassword(String oldPassword, String newPassword)
-    {
-        return false;
-    }
 
 }

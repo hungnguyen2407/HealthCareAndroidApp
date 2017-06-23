@@ -46,6 +46,7 @@
 
     <!--String dùng cho setting UI-->
     <string name="setting_header">Cài Đặt</string>
+    <string name="setting_change_info_action">Chỉnh sửa thông tin cá nhân</string>
     <string name="setting_change_name_action">Thay đổi họ tên</string>
     <string name="setting_change_email">Thay đổi email</string>
     <string name="setting_change_phone">Thay đổi số điện thoại</string>
