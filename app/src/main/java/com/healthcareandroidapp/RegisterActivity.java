@@ -177,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.passwordView.setError(getString(R.string.register_error_field_required));
             focusView = this.passwordView;
             cancel = true;
-        } else if (!isPasswordValid(password)) {
+        } else if (!Validation.isPasswordValid(password)) {
             this.passwordView.setError(getString(R.string.register_error_invalid_password));
             focusView = this.passwordView;
             cancel = true;
@@ -188,7 +188,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.confirmPasswordView.setError(getString(R.string.register_error_field_required));
             focusView = this.confirmPasswordView;
             cancel = true;
-        } else if (!isPasswordValid(confirmPassword)) {
+        } else if (!Validation.isPasswordValid(confirmPassword)) {
             this.confirmPasswordView.setError(getString(R.string.register_error_invalid_password));
             focusView = this.confirmPasswordView;
             cancel = true;
@@ -203,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.userNameView.setError(getString(R.string.error_field_required));
             focusView = this.userNameView;
             cancel = true;
-        } else if (!isUserNameValid(userName)) {
+        } else if (!Validation.isUserNameValid(userName)) {
             this.userNameView.setError(getString(R.string.login_error_invalid_user_name));
             focusView = this.userNameView;
             cancel = true;
@@ -214,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.emailView.setError(getString(R.string.register_error_field_required));
             focusView = this.emailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!Validation.isEmailValid(email)) {
             this.emailView.setError(getString(R.string.register_error_invalid_email));
             focusView = this.emailView;
             cancel = true;
@@ -260,7 +260,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.experienceView.setError(getString(R.string.register_error_field_required));
             focusView = this.experienceView;
             cancel = true;
-        } else if(!isExperienceValid(experience))
+        } else if(!Validation.isExperienceValid(experience))
         {
             this.experienceView.setError(getString(R.string.register_error_invalid_experience));
             focusView = this.experienceView;
@@ -279,7 +279,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.phoneView.setError(getString(R.string.register_error_field_required));
             focusView = this.phoneView;
             cancel = true;
-        } else if (!isPhoneValid(phone)) {
+        } else if (!Validation.isPhoneValid(phone)) {
             this.phoneView.setError(getString(R.string.register_error_invalid_phone));
             focusView = this.phoneView;
             cancel = true;
@@ -303,45 +303,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             registerTask = new UserRegisterTask(userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport);
             registerTask.execute((Void) null);
         }
-    }
-
-    //Check valid methods
-
-    private boolean isUserNameValid(String userName) {
-
-        return userName.length() > 8;
-    }
-
-    private boolean isPasswordValid(String password) {
-
-        return password.length() > 4;
-
-    }
-
-    private boolean isEmailValid(String email) {
-        if (email != null) {
-            Pattern p = Pattern.compile("^[A-Za-z].*?@gmail\\.com$");
-            Matcher m = p.matcher(email);
-            return m.find();
-        }
-        return false;
-    }
-
-    private boolean isPhoneValid(String phone) {
-        return phone.length() > 10;
-    }
-
-    private boolean isExperienceValid(String experience)
-    {
-        try {
-            Integer.parseInt(experience);
-        } catch(NumberFormatException e) {
-            return false;
-        } catch(NullPointerException e) {
-            return false;
-        }
-        // only got here if we didn't return false
-        return true;
     }
 
     /**

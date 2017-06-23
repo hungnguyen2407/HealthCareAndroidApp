@@ -3,7 +3,6 @@ package com.healthcareandroidapp;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,27 +10,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import entity.Schedules;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -210,7 +204,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new CommunicationFragment()).commit();
         }
 
-
         //Xu ly su kien nav dang xuat
         else if (id == R.id.nav_logout) {
             doctorJSON = null;
@@ -226,9 +219,108 @@ public class MainActivity extends AppCompatActivity
             contentFrame.setVisibility(View.GONE);
         }
 
+        //Xy ly su kien nav cai dat
+        else if (id == R.id.nav_setting) {
+            header.setVisibility(View.GONE);
+            homeContent.setVisibility(View.GONE);
+            settingHandle();
+            fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void settingHandle() {
+        Button btnChangePassword = (Button) findViewById(R.id.btn_change_password);
+        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvNewPassword = (TextView) findViewById(R.id.tvNewPassword);
+                tvNewPassword.setVisibility(View.VISIBLE);
+
+                EditText edtNewPassword = (EditText) findViewById(R.id.edtNewPassword);
+                edtNewPassword.setVisibility(View.VISIBLE);
+
+                TextView tvConfirmNewPassword = (TextView) findViewById(R.id.tvConfirmNewPassword);
+                tvConfirmNewPassword.setVisibility(View.VISIBLE);
+
+                EditText edtConfirmNewPassword = (EditText) findViewById(R.id.edtConfirmNewPassword);
+                edtConfirmNewPassword.setVisibility(View.VISIBLE);
+
+                TextView tvOldPassword = (TextView) findViewById(R.id.tvOldPassword);
+                tvOldPassword.setVisibility(View.VISIBLE);
+
+                EditText edtOldPassword = (EditText) findViewById(R.id.edtOldPassword);
+                edtOldPassword.setVisibility(View.VISIBLE);
+            }
+        });
+
+        Button btnConfirmChangePassword = (Button) findViewById(R.id.btn_confirm_change_password);
+        btnConfirmChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText edtNewPassword = (EditText) findViewById(R.id.edtNewPassword);
+                String newPassword = edtNewPassword.getText().toString();
+                EditText edtConfirmNewPassword = (EditText) findViewById(R.id.edtConfirmNewPassword);
+                String confirmNewPassword = edtNewPassword.getText().toString();
+                EditText edtOldPassword = (EditText) findViewById(R.id.edtOldPassword);
+                String oldPassword = edtNewPassword.getText().toString();
+
+                EditText focusEdit = null;
+                boolean cancel = false;
+                if (TextUtils.isEmpty(oldPassword)) {
+                    edtOldPassword.setError(getString(R.string.register_error_field_required));
+                    focusEdit = edtOldPassword;
+                    cancel = true;
+
+                } else if (!Validation.isPasswordValid(oldPassword)) {
+                    edtOldPassword.setError(getString(R.string.register_error_invalid_password));
+                    focusEdit = edtOldPassword;
+                    cancel = true;
+                }
+
+                if (TextUtils.isEmpty(newPassword)) {
+                    edtNewPassword.setError(getString(R.string.register_error_field_required));
+                    focusEdit = edtNewPassword;
+                    cancel = true;
+                } else if (!Validation.isPasswordValid(newPassword)) {
+                    edtNewPassword.setError(getString(R.string.register_error_invalid_password));
+                    focusEdit = edtNewPassword;
+                    cancel = true;
+                }
+
+                if (TextUtils.isEmpty(confirmNewPassword)) {
+                    edtConfirmNewPassword.setError(getString(R.string.register_error_field_required));
+                    focusEdit = edtConfirmNewPassword;
+                    cancel = true;
+                } else if (!Validation.isPasswordValid(confirmNewPassword)) {
+                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_password));
+                    focusEdit = edtConfirmNewPassword;
+                    cancel = true;
+                } else if (!confirmNewPassword.equals(newPassword)) {
+                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_confirm_password));
+                    focusEdit = edtConfirmNewPassword;
+                    cancel = true;
+                }
+
+            }
+        });
+
+        Button btnConfirmChangeInfo = (Button) findViewById(R.id.btn_confirm_change_info);
+        btnConfirmChangeInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText edtName = (EditText) findViewById(R.id.edtName);
+                EditText edtEmail = (EditText) findViewById(R.id.edtEmail);
+                EditText edtPhone = (EditText) findViewById(R.id.edtPhone);
+                EditText edtAddress = (EditText) findViewById(R.id.edtAddress);
+                EditText edtDegree = (EditText) findViewById(R.id.edtDegree);
+                EditText edtExperience = (EditText) findViewById(R.id.edtExperience);
+                EditText edtPassport = (EditText) findViewById(R.id.edtPassport);
+            }
+        });
+
     }
 
 
@@ -264,5 +356,50 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    class UserChangePasswordTask extends AsyncTask<Void, Void, Boolean> {
+        private final String oldPassword, newPassword;
 
+        UserChangePasswordTask(String oldPassword, String newPassword) {
+            this.oldPassword = oldPassword;
+            this.newPassword = newPassword;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            return Connection.changePassword(oldPassword, newPassword);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+
+            if (success) {
+
+            }
+        }
+    }
+
+
+    class UserChangeInfoTask extends AsyncTask<Void, Void, Boolean> {
+        private final String doctorInfo;
+
+        UserChangeInfoTask(String doctorInfo) {
+            this.doctorInfo = doctorInfo;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            return Connection.changeInfo(doctorInfo);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+
+            if (success) {
+
+            }
+        }
+    }
 }

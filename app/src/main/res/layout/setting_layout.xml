@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/setting_headder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/setting_header"
+            android:textSize="20dp" />
+
+
+        <!--Thay doi thong tin ten bac si-->
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_name" />
+
+        <EditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thong tin email-->
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_email" />
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thay doi thong tin sdt-->
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_phone" />
+
+        <EditText
+            android:id="@+id/edtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thay doi thong tin dia chi-->
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_address" />
+
+        <EditText
+            android:id="@+id/edtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thay doi thong tin passport-->
+
+        <TextView
+            android:id="@+id/tvPassport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_passport" />
+
+        <EditText
+            android:id="@+id/edtPassport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thay doi thong tin bang cap-->
+
+        <TextView
+            android:id="@+id/tvDegree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_degree" />
+
+        <EditText
+            android:id="@+id/edtDegree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Thay doi thong tin kinh nghiem-->
+
+        <TextView
+            android:id="@+id/tvExperience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_experience" />
+
+        <EditText
+            android:id="@+id/edtExperience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <!--Xac nhan mat khau de thay doi-->
+
+        <TextView
+            android:id="@+id/tvPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_confirm_password" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+
+        <Button
+            android:id="@+id/btn_confirm_change_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_confirm_change_info" />
+
+
+        <!--Thay doi thong tin mat khau-->
+        <!--Khong dung chung voi form tren -->
+        <Button
+            android:id="@+id/btn_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_change_password_action" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_new_password"
+            android:visibility="gone"
+            android:id="@+id/tvNewPassword"/>
+
+        <EditText
+            android:id="@+id/edtNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_confirm_new_password"
+            android:visibility="gone"
+            android:id="@+id/tvConfirmNewPassword"/>
+
+        <EditText
+            android:id="@+id/edtConfirmNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_old_password"
+            android:visibility="gone"
+            android:id="@+id/tvOldPassword"/>
+
+        <EditText
+            android:id="@+id/edtOldPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_confirm_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_confirm_change_password_action"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+</ScrollView>
