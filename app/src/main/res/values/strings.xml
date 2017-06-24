@@ -29,8 +29,6 @@
     <string name="register_phone">Số điện thoại</string>
     <string name="register_birth_day">Ngày sinh</string>
     <string name="register_passport">Hộ chiếu</string>
-    <string name="register_clinic_name">Tên phòng khám</string>
-    <string name="register_clinic_address">Địa chỉ phòng khám</string>
     <string name="register_speciality">Chuyên ngành</string>
     <string name="register_degree">Bằng cấp</string>
     <string name="register_experience">Kinh nghiệm</string>

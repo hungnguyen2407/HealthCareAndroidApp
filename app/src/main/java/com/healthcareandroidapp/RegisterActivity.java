@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
      */
     private UserRegisterTask registerTask = null;
     private View progressBar, registerForm;
-    private TextView userNameView, passwordView, confirmPasswordView, nameView, clinicNameView, clinicAddressView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateView;
+    private TextView userNameView, passwordView, confirmPasswordView, nameView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateView;
     private JSONObject doctorJSON = null;
 
     @Override
@@ -77,8 +77,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         confirmPasswordView = (TextView) findViewById(R.id.register_confirm_password);
         emailView = (TextView) findViewById(R.id.register_email);
         nameView = (TextView) findViewById(R.id.register_name);
-        clinicNameView = (TextView) findViewById(R.id.register_clinic_name);
-        clinicAddressView = (TextView) findViewById(R.id.register_clinic_address);
         specialityView = (TextView) findViewById(R.id.register_speciality);
         degreeView = (TextView) findViewById(R.id.register_degree);
         experienceView = (TextView) findViewById(R.id.register_experience);
@@ -153,8 +151,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         passwordView.setError(null);
         confirmPasswordView.setError(null);
         nameView.setError(null);
-        clinicNameView.setError(null);
-        clinicAddressView.setError(null);
         specialityView.setError(null);
         degreeView.setError(null);
         experienceView.setError(null);
@@ -169,8 +165,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         String password = this.passwordView.getText().toString();
         String confirmPassword = this.confirmPasswordView.getText().toString();
         String name = this.nameView.getText().toString();
-        String clinicName = this.clinicNameView.getText().toString();
-        String clinicAddress = this.clinicAddressView.getText().toString();
         String speciality = this.specialityView.getText().toString();
         String degree = this.degreeView.getText().toString();
         String experience = this.experienceView.getText().toString();
@@ -235,20 +229,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         if (TextUtils.isEmpty(name)) {
             this.nameView.setError(getString(R.string.register_error_field_required));
             focusView = this.nameView;
-            cancel = true;
-        }
-
-        //Kiem tra dinh dang ten phong kham
-        if (TextUtils.isEmpty(clinicName)) {
-            this.clinicNameView.setError(getString(R.string.register_error_field_required));
-            focusView = this.clinicNameView;
-            cancel = true;
-        }
-
-        // Kiem tra dinh dang dia chi phong kham
-        if (TextUtils.isEmpty(clinicAddress)) {
-            this.clinicAddressView.setError(getString(R.string.register_error_field_required));
-            focusView = this.clinicAddressView;
             cancel = true;
         }
 
@@ -317,7 +297,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            registerTask = new UserRegisterTask(userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
+            registerTask = new UserRegisterTask(userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
             registerTask.execute((Void) null);
         }
     }
@@ -375,14 +355,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String userName, password, name, clinicName, clinicAddress, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
+        private final String userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
 
-        UserRegisterTask(String userName, String password, String name, String clinicName, String clinicAddress, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
+        UserRegisterTask(String userName, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
             this.userName = userName;
             this.password = password;
             this.name = name;
-            this.clinicName = clinicName;
-            this.clinicAddress = clinicAddress;
             this.speciality = speciality;
             this.degree = degree;
             this.experience = experience;
