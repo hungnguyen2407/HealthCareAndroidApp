@@ -74,13 +74,12 @@
         completions."
     </string>
 
-    <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="large_text">
-        ""
-    </string>
-    <string name="title_activity_welcome">WelcomeActivity</string>
+    <!--String cho forget pass UI-->
+    <string name="forget_password_action">Quên Mật Khẩu</string>
+    <string name="forget_password_header">Lấy Lại Mật Khẩu</string>
+    <string name="forget_password_submit_action">Xác nhận</string>
+    <string name="forget_password_email">Email của tài khoản cần lấy lại mật khẩu</string>
     <string name="title_activity_register">Đăng Kí</string>
 
-    <string name="sign_up">Sign up</string>
-    <string name="sign_up_image">Header for app</string>
+
 </resources>

@@ -145,4 +145,27 @@ public class Connection {
     }
 
 
+    public static boolean resetPass(String email) {
+        String line, response = "";
+        try {
+            HttpURLConnection urlConnection = null;
+            URL url = new URL(host + "/doctor/forgetpassword/" + email);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            do {
+                line = bufferedReader.readLine();
+                if (line != null) response += line;
+            } while (line != null);
+
+            Log.v("result", response);
+
+            urlConnection.disconnect();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return !response.equals("");
+    }
 }

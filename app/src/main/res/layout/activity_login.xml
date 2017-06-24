@@ -88,6 +88,16 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/submit_register_action"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_forget_password_action"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="@string/forget_password_action" />
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

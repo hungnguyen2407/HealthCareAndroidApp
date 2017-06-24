@@ -70,14 +70,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String userNameInfo = sp.getString("userName", "");
         String passWordInfo = sp.getString("passWord", "");
 
-        if (!userNameInfo.equals("") && !passWordInfo.equals(""))
-        {
+        if (!userNameInfo.equals("") && !passWordInfo.equals("")) {
             authenTask = new UserLoginTask(userNameInfo, passWordInfo);
             authenTask.execute((Void) null);
         }
 
-            //Lay thong tu form dang nhap
-            userName = (AutoCompleteTextView) findViewById(R.id.username);
+        //Lay thong tu form dang nhap
+        userName = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
         password = (EditText) findViewById(R.id.password_edit_text);
@@ -96,6 +95,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 register();
+            }
+        });
+
+        Button forgetButton = (Button) findViewById(R.id.btn_forget_password_action);
+        forgetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forget();
             }
         });
         loginForm = findViewById(R.id.sign_in_form);
@@ -362,6 +369,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
+    }
+
+    private void forget() {
+        Intent intent = new Intent(this, ForgetPassActivity.class);
+        startActivity(intent);
     }
 
     private void goMainActivity() {
