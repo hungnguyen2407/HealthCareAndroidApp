@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -378,7 +379,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
             Date date = new Date();
             Doctor doctor = new Doctor();
-            Connection.register(doctor);
+            Log.v("JSON", doctor.toJson());
+//            Connection.register(doctor);
             return true;
         }
 

@@ -1,6 +1,7 @@
 package com.healthcareandroidapp;
 
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -41,52 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        //Lay du lieu tu file trong bo nho trong
-//        try {
-//            FileInputStream fis = openFileInput(fileName);
-//            DataInputStream dis = new DataInputStream(fis);
-//            String response = dis.readUTF();
-//
-//            Lay thong tin bac si
-//            if (response != null) {
-//                doctorJSON = new JSONObject(response);
-//            } else {
-//                Intent intent = getIntent();
-//                String doctorInfo = intent.getStringExtra(fileName);
-//                FileOutputStream fos = new FileOutputStream(fileName);
-//                DataOutputStream dos = new DataOutputStream(fos);
-//                try {
-//                    if (doctorInfo != null) {
-//                        doctorJSON = new JSONObject(doctorInfo);
-//                        dos.writeUTF(doctorInfo);
-//                    }else{
-//                        Intent loginIntent = new Intent(this, LoginActivity.class);
-//                        startActivity(loginIntent);
-//                        Intent mainIntent = new Intent(this, MainActivity.class);
-//                        stopService(mainIntent);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         Intent intent = getIntent();
         String doctorInfo = intent.getStringExtra(fileName);
@@ -210,7 +165,13 @@ public class MainActivity extends AppCompatActivity
 
         //Xu ly su kien nav dang xuat
         else if (id == R.id.nav_logout) {
+            //Xoa du lieu dang nhap trong may
             doctorJSON = null;
+            SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("userName", "");
+            editor.putString("passWord", "");
+            editor.commit();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }

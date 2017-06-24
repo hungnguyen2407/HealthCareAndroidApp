@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -56,15 +58,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View progressBar;
     private View loginForm;
     private JSONObject doctorJSON = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Lay thong tin dang nhap trong may
+        SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+        String userNameInfo = sp.getString("userName", "");
+        String passWordInfo = sp.getString("passWord", "");
 
-        // Set up the login form.
-        userName = (AutoCompleteTextView) findViewById(R.id.username);
+        if (!userNameInfo.equals("") && !passWordInfo.equals(""))
+        {
+            authenTask = new UserLoginTask(userNameInfo, passWordInfo);
+            authenTask.execute((Void) null);
+        }
+
+            //Lay thong tu form dang nhap
+            userName = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
         password = (EditText) findViewById(R.id.password_edit_text);
@@ -314,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
 
 
-            doctorJSON = Connection.login(userName,passWord);
+            doctorJSON = Connection.login(userName, passWord);
 
             return doctorJSON != null;
         }
@@ -325,7 +338,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                //Luu du lieu dang nhap vao may
+                SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("userName", userName);
+                editor.putString("passWord", passWord);
+                editor.commit();
+
                 goMainActivity();
+
                 finish();
 
             } else {
