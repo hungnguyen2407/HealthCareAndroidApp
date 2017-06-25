@@ -18,6 +18,8 @@ public class WorkScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         workScheduleView = inflater.inflate(R.layout.work_schedule_layout,container,false);
+
+
         return workScheduleView;
 
     }

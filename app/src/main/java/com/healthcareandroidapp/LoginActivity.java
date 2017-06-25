@@ -66,13 +66,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
 
         //Lay thong tin dang nhap trong may
-        SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
-        String userNameInfo = sp.getString("userName", "");
-        String passWordInfo = sp.getString("passWord", "");
+        SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+        String doctorInfo = sp.getString("doctorJSON", "");
 
-        if (!userNameInfo.equals("") && !passWordInfo.equals("")) {
-            authenTask = new UserLoginTask(userNameInfo, passWordInfo);
-            authenTask.execute((Void) null);
+
+        if (!doctorInfo.equals("")) {
+            try {
+                doctorJSON = new JSONObject(doctorInfo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            goMainActivity();
         }
 
         //Lay thong tu form dang nhap
@@ -346,10 +350,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 //Luu du lieu dang nhap vao may
-                SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+                SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("userName", userName);
-                editor.putString("passWord", passWord);
+                editor.putString("doctorJSON", doctorJSON.toString());
                 editor.commit();
 
                 goMainActivity();

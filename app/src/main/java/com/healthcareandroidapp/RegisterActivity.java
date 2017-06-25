@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import entity.Doctor;
 
 public class RegisterActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
@@ -378,9 +377,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             //TODO:Xy ly dang ki tai khoan
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
             Date date = new Date();
-            Doctor doctor = new Doctor();
-            Log.v("JSON", doctor.toJson());
-//            Connection.register(doctor);
+
+            Connection.register(null);//TODO
             return true;
         }
 

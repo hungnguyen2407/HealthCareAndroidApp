@@ -17,9 +17,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import entity.Clinic;
-import entity.Doctor;
-import entity.Specialty;
 
 /**
  * Created by hungnguyen on 19/06/2017.
@@ -88,14 +85,14 @@ public class Connection {
     }
 
 
-    public static JSONObject register(Doctor doctor) {
+    public static JSONObject register(String doctorInfo) {
 
         JSONObject doctorJSON = null;
 
         try {
-            doctorJSON = new JSONObject(doctor.toJson());
+            doctorJSON = new JSONObject(doctorInfo);
             HttpURLConnection urlConnection = null;
-            URL url = new URL(host + "/doctor/register/" + doctor.toJson());
+            URL url = new URL(host + "/doctor/register/" + doctorJSON.toString());
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -118,12 +115,12 @@ public class Connection {
         return doctorJSON;
     }
 
-    public static boolean changeInfo(Doctor doctor) {
+    public static boolean changeInfo(String doctorInfo) {
         //TODO
 
         try {
             HttpURLConnection urlConnection = null;
-            URL url = new URL(host + "/doctor/update/" + doctor.toJson());
+            URL url = new URL(host + "/doctor/update/"); //TODO
             urlConnection = (HttpURLConnection) url.openConnection();
 //            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
 //            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

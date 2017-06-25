@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
@@ -27,16 +28,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entity.Doctor;
-import entity.Schedules;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private JSONObject doctorJSON, workScheduleJSON;
     private String fileName = "doctorInfo";
-    private Doctor doctor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,7 +48,6 @@ public class MainActivity extends AppCompatActivity
         }
         try {
             doctorJSON = new JSONObject(doctorInfo);
-            doctor = new Doctor(); //TODO: lay du lieu tu JSON vao doi tuong doctor
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -129,15 +125,16 @@ public class MainActivity extends AppCompatActivity
 
                 TextView workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
                 JSONObject workScheduleObject;
-                JSONArray workScheduleArray = workScheduleJSON.getJSONArray("scheduleList");
-                for (int i = 0; i < workScheduleArray.length(); i++) {
-                    workScheduleObject = (JSONObject) workScheduleArray.get(i);
-                    Schedules schedule = new Schedules(workScheduleObject.getString("dates"), Integer.parseInt(workScheduleObject.getString("startTime")), Integer.parseInt(workScheduleObject.getString("stopTime")), workScheduleObject.getString("workspace"));
-                    workScheduleTV.setText("Thứ " + schedule.getDates());
-                    workScheduleTV.setText("Giờ làm việc từ " + schedule.getStartTimeClock() + " đến " + schedule.getStopTimeClock());
-                    workScheduleTV.setText("Phòng làm việc " + schedule.getWorkspace());
 
-                }
+                JSONArray array = workScheduleJSON.getJSONArray("scheduleList");
+//                JSONArray workScheduleArray = workScheduleJSON.getJSONArray("scheduleList");
+//                for (int i = 0; i < workScheduleArray.length(); i++) {
+//                    workScheduleObject = (JSONObject) workScheduleArray.get(i);
+//                    workScheduleTV.setText("Thứ " + workScheduleObject.getString("dates"));
+//                    workScheduleTV.setText("Giờ làm việc từ " + workScheduleObject.getString("startTimeClock") + " đến " + workScheduleObject.getString("stopTimeClock"));
+//                    workScheduleTV.setText("Phòng làm việc " + workScheduleObject.getString("workspace"));
+//
+//                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -215,7 +212,7 @@ public class MainActivity extends AppCompatActivity
 
 
             workScheduleJSON = Connection.getWorkSchedule(doctorID);
-
+            Log.v("result", workScheduleJSON.toString());
             return workScheduleJSON != null;
         }
 
@@ -243,7 +240,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return Connection.changeInfo(doctor);
+            return Connection.changeInfo(null); //TODO
 
         }
 
@@ -267,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return Connection.changeInfo(doctor);
+            return Connection.changeInfo(null); //TODO
         }
 
         @Override
