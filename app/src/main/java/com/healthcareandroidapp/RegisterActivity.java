@@ -23,7 +23,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -377,9 +379,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             //TODO:Xy ly dang ki tai khoan
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
             Date date = new Date();
+            String doctorInfo = "{\"nameSpecialty\":\""+speciality+"\",\"username\":\""+userName+"\",\"nameDoctor\":\""+name+"\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"phone\":\""+phone+"\",\"passport\":\""+passport+"\",\"degree\":\""+degree+"\",\"experience\":\""+experience+"\",\"doctorAddress\":\""+doctorAddress+"\"}";
 
-            Connection.register(null);//TODO
-            return true;
+           //TODO
+            return  Connection.register(doctorInfo);
         }
 
         @Override
@@ -388,11 +391,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
-
+                Toast.makeText(getApplicationContext(), "Đăng kí thành công", Toast.LENGTH_LONG).show();
                 finish();
 
             } else {
-                // Xu ly khi dang ki khong thanh cong
+                Toast.makeText(getApplicationContext(), "Đăng kí không thành công", Toast.LENGTH_LONG).show();
             }
         }
 

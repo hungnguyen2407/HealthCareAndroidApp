@@ -78,7 +78,7 @@
     <string name="forget_password_action">Quên Mật Khẩu</string>
     <string name="forget_password_header">Lấy Lại Mật Khẩu</string>
     <string name="forget_password_submit_action">Xác nhận</string>
-    <string name="forget_password_email">Email của tài khoản cần lấy lại mật khẩu</string>
+    <string name="forget_password_email">Email</string>
     <string name="title_activity_register">Đăng Kí</string>
 
 

@@ -11,15 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,8 +28,11 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private JSONObject doctorJSON, workScheduleJSON;
-    private String fileName = "doctorInfo";
+    public JSONObject doctorJSON, workScheduleListJSON = null;
+    public JSONArray workScheduleListJSONArray = null;
+    public String fileName = "doctorInfo";
+    public TextView workScheduleTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,14 +50,9 @@ public class MainActivity extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
-            TextView header = (TextView) findViewById(R.id.header);
-            header.setText("Xin chào bác sĩ \n" + doctorJSON.getString("nameDoctor") + ".\n");
-            TextView homeContent = (TextView) findViewById(R.id.homeContent);
-            homeContent.setText("Thông tin bác sĩ:\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSố điện thoại: " + doctorJSON.getString("phone") + "\nĐịa chỉ: " + doctorJSON.getString("address"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        TextView header = (TextView) findViewById(R.id.welcome);
+        homeHanle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,38 +104,43 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        TextView header = (TextView) findViewById(R.id.header);
-        TextView homeContent = (TextView) findViewById(R.id.homeContent);
+        TextView header = (TextView) findViewById(R.id.welcome);
+        ScrollView homeContent = (ScrollView) findViewById(R.id.homeContent);
+        TextView workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
 
 
         //Xu ly su kien nav lich lam viec
         if (id == R.id.nav_work_schedule) {
+
             header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
+            ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
+            workScheduleView.setVisibility(View.VISIBLE);
+            this.workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
+            String doctorID = null;
             try {
-                WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorJSON.getString("idDoctor"));
-                workScheduleTask.execute((Void) null);
+                doctorID = doctorJSON.getString("idDoctor");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorID);
+            workScheduleTask.execute((Void) null);
+            SharedPreferences sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
+            try {
+                workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
 
-                TextView workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
-                JSONObject workScheduleObject;
-
-                JSONArray array = workScheduleJSON.getJSONArray("scheduleList");
-//                JSONArray workScheduleArray = workScheduleJSON.getJSONArray("scheduleList");
-//                for (int i = 0; i < workScheduleArray.length(); i++) {
-//                    workScheduleObject = (JSONObject) workScheduleArray.get(i);
-//                    workScheduleTV.setText("Thứ " + workScheduleObject.getString("dates"));
-//                    workScheduleTV.setText("Giờ làm việc từ " + workScheduleObject.getString("startTimeClock") + " đến " + workScheduleObject.getString("stopTimeClock"));
-//                    workScheduleTV.setText("Phòng làm việc " + workScheduleObject.getString("workspace"));
-//
-//                }
-
+                workScheduleListJSONArray = workScheduleListJSON.getJSONArray("scheduleList");
+                for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
+                    JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
+                    setTextWorkSchedule(workScheduleJSON.getString("dates"),workScheduleJSON.getString("startTimeClock"),workScheduleJSON.getString("stopTimeClock"),workScheduleJSON.getString("workspace"));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            //Thay content cho content_nav
-            fragmentManager.beginTransaction().replace(R.id.contentFrame, new WorkScheduleFragment()).commit();
+
+
         }
 
 
@@ -164,10 +163,9 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_logout) {
             //Xoa du lieu dang nhap trong may
             doctorJSON = null;
-            SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("userName", "");
-            editor.putString("passWord", "");
+            editor.putString("doctorJSON", "");
             editor.commit();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
         //Xu ly su kien nav trang chu
         else if (id == R.id.nav_home) {
-            header.setText("Thông tin bác sĩ.");
+            homeHanle();
             header.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
             contentFrame.setVisibility(View.GONE);
@@ -185,7 +183,6 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_setting) {
             header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
-
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
 
         }
@@ -193,8 +190,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 
     public class WorkScheduleTask extends AsyncTask<Void, Void, Boolean> {
@@ -211,9 +206,14 @@ public class MainActivity extends AppCompatActivity
         protected Boolean doInBackground(Void... params) {
 
 
-            workScheduleJSON = Connection.getWorkSchedule(doctorID);
-            Log.v("result", workScheduleJSON.toString());
-            return workScheduleJSON != null;
+            workScheduleListJSON = Connection.getWorkSchedule(doctorID);
+            SharedPreferences sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("workScheduleList", workScheduleListJSON.toString());
+            editor.commit();
+
+
+            return workScheduleListJSON != null;
         }
 
         @Override
@@ -222,12 +222,12 @@ public class MainActivity extends AppCompatActivity
             if (success) {
 
                 finish();
-
             }
         }
 
 
     }
+
 
     class UserChangePasswordTask extends AsyncTask<Void, Void, Boolean> {
         private final String oldPassword, newPassword;
@@ -274,5 +274,24 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
+    }
+
+    private void homeHanle() {
+        TextView homeContent = (TextView) findViewById(R.id.homeInfo);
+        try {
+            JSONObject specialityJSON = doctorJSON.getJSONObject("specialty");
+            homeContent.setText("\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSố điện thoại: " + doctorJSON.getString("phone") + "\nEmail: " + doctorJSON.getString("email") + "\nĐịa chỉ: " + doctorJSON.getString("address") + "\nChuyên ngành: " + specialityJSON.getString("nameSpecialty") + "\nBằng cấp: " + doctorJSON.getString("degree") + "\nKinh nghiệm: " + doctorJSON.getString("experience"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setTextWorkSchedule(String dates, String startTime, String stopTime, String workspace)
+    {
+        workScheduleTV.setText("Thứ " + dates);
+        workScheduleTV.setText("Giờ làm việc từ " + startTime + " đến " + stopTime);
+        workScheduleTV.setText("Phòng làm việc " + workspace);
+        workScheduleTV.setText("\n\n");
     }
 }

@@ -29,17 +29,19 @@ public class SettingFragment extends Fragment {
     }
 
     private void settingHandle() {
+
         final Button btnChangeInfo = (Button) settingView.findViewById(R.id.btn_change_info);
+
         btnChangeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnChangeInfo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                btnChangeInfo.setTextColor(Color.WHITE);
+
                 ScrollView scrollViewChangeInfo = (ScrollView) settingView.findViewById(R.id.setting_sv_change_info);
                 if (scrollViewChangeInfo.getVisibility() == View.VISIBLE)
                     scrollViewChangeInfo.setVisibility(View.GONE);
                 else
                     scrollViewChangeInfo.setVisibility(View.VISIBLE);
+
             }
         });
 
