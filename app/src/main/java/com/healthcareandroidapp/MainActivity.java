@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         TextView header = (TextView) findViewById(R.id.welcome);
         homeHanle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -133,12 +133,11 @@ public class MainActivity extends AppCompatActivity
                 workScheduleListJSONArray = workScheduleListJSON.getJSONArray("scheduleList");
                 for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
                     JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
-                    setTextWorkSchedule(workScheduleJSON.getString("dates"),workScheduleJSON.getString("startTimeClock"),workScheduleJSON.getString("stopTimeClock"),workScheduleJSON.getString("workspace"));
+                    setTextWorkSchedule(workScheduleJSON.getString("dates"), workScheduleJSON.getString("startTimeClock"), workScheduleJSON.getString("stopTimeClock"), workScheduleJSON.getString("workspace"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
 
         }
@@ -191,6 +190,18 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void setDoctorJSON(JSONObject doctorJSON)
+    {
+        this.doctorJSON = doctorJSON;
+        return;
+    }
+    public JSONObject getDoctorJSON() {
+        return doctorJSON;
+    }
+
+    public String getDoctorInfo() {
+        return doctorJSON.toString();
+    }
 
     public class WorkScheduleTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -221,60 +232,12 @@ public class MainActivity extends AppCompatActivity
 
             if (success) {
 
-                finish();
             }
         }
 
 
     }
 
-
-    class UserChangePasswordTask extends AsyncTask<Void, Void, Boolean> {
-        private final String oldPassword, newPassword;
-
-        UserChangePasswordTask(String oldPassword, String newPassword) {
-            this.oldPassword = oldPassword;
-            this.newPassword = newPassword;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            return Connection.changeInfo(null); //TODO
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-
-            if (success) {
-
-            }
-        }
-    }
-
-
-    class UserChangeInfoTask extends AsyncTask<Void, Void, Boolean> {
-        private final String doctorInfo;
-
-        UserChangeInfoTask(String doctorInfo) {
-            this.doctorInfo = doctorInfo;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            return Connection.changeInfo(null); //TODO
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-
-            if (success) {
-
-            }
-        }
-    }
 
     private void homeHanle() {
         TextView homeContent = (TextView) findViewById(R.id.homeInfo);
@@ -287,8 +250,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void setTextWorkSchedule(String dates, String startTime, String stopTime, String workspace)
-    {
+    private void setTextWorkSchedule(String dates, String startTime, String stopTime, String workspace) {
         workScheduleTV.setText("Thứ " + dates);
         workScheduleTV.setText("Giờ làm việc từ " + startTime + " đến " + stopTime);
         workScheduleTV.setText("Phòng làm việc " + workspace);

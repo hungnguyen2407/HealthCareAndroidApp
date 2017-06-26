@@ -8,6 +8,7 @@ import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
     private UserRegisterTask registerTask = null;
     private View progressBar, registerForm;
     private TextView userNameView, passwordView, confirmPasswordView, nameView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateView;
-    private JSONObject doctorJSON = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,53 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        Button registerButton = (Button) findViewById(R.id.btnSubmit_SignUp);
+        final Button registerButton = (Button) findViewById(R.id.btnSubmit_SignUp);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(RegisterActivity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(registerButton.getWindowToken(),
+                        InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 //Thuc hien qua trinh gui du lieu dang ki len server
+//                AlertDialog alertDialog = new AlertDialog.Builder(getApplication()).create();
+//                alertDialog.setTitle("Thông Báo");
+//                alertDialog.setMessage("Xác nhận muốn đăng kí tài khoản");
+//                alertDialog.setContentView(R.layout.activity_register);
+//                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if (register()) {
+//                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
+//                                    alertDialog1.setTitle("Thông Báo");
+//                                    alertDialog1.setMessage("Đăng kí thành công");
+//                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                                            new DialogInterface.OnClickListener() {
+//                                                public void onClick(DialogInterface dialog, int which) {
+//                                                    dialog.dismiss();
+//                                                }
+//                                            });
+//                                    alertDialog1.show();
+//                                } else {
+//                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
+//                                    alertDialog1.setTitle("Thông Báo");
+//                                    alertDialog1.setMessage("Đăng kí không thành công");
+//                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                                            new DialogInterface.OnClickListener() {
+//                                                public void onClick(DialogInterface dialog, int which) {
+//                                                    dialog.dismiss();
+//                                                }
+//                                            });
+//                                    alertDialog1.show();
+//                                }
+//                            }
+//                        });
+//                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Huỷ bỏ",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                alertDialog.show();
                 register();
             }
         });
@@ -142,10 +186,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         startActivity(loginIntent);
     }
 
-    public void register() {
+    public boolean register() {
 
         if (registerTask != null) {
-            return;
+            return false;
         }
 
         // Reset errors.
@@ -301,7 +345,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(true);
             registerTask = new UserRegisterTask(userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
             registerTask.execute((Void) null);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -376,9 +422,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            //TODO:Xy ly dang ki tai khoan
-            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/mm/yyyy");
-            Date date = new Date();
             String doctorInfo = "{\"nameSpecialty\":\""+speciality+"\",\"username\":\""+userName+"\",\"nameDoctor\":\""+name+"\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"phone\":\""+phone+"\",\"passport\":\""+passport+"\",\"degree\":\""+degree+"\",\"experience\":\""+experience+"\",\"doctorAddress\":\""+doctorAddress+"\"}";
 
            //TODO
@@ -391,11 +434,31 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
-                Toast.makeText(getApplicationContext(), "Đăng kí thành công", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Đăng kí thành công", Toast.LENGTH_LONG).show();
+                AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Đăng kí thành công");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
                 finish();
 
             } else {
-                Toast.makeText(getApplicationContext(), "Đăng kí không thành công", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Đăng kí không thành công", Toast.LENGTH_LONG).show();
+                AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Đăng kí không thành công");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
         }
 

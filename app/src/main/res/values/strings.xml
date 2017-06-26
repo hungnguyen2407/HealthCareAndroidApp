@@ -48,9 +48,12 @@
     <string name="setting_change_info_action">Chỉnh sửa thông tin cá nhân</string>
     <string name="setting_change_name_action">Thay đổi họ tên</string>
     <string name="setting_change_email">Thay đổi email</string>
+    <string name="setting_change_name">Thay đổi họ tên</string>
     <string name="setting_change_phone">Thay đổi số điện thoại</string>
+    <string name="setting_change_birthdate">Thay đổi ngày sinh</string>
     <string name="setting_change_address">Thay đổi địa chỉ</string>
     <string name="setting_change_degree">Thay đổi bằng cấp</string>
+    <string name="setting_change_speciality">Thay đổi chuyên ngành</string>
     <string name="setting_change_experience">Thay đổi kinh nghiệm</string>
     <string name="setting_confirm_password">Nhập mật khẩu để thay </string>
     <string name="setting_change_passport">Thay đổi passport</string>

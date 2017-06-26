@@ -39,7 +39,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_name" />
+                android:text="@string/setting_change_name" />
 
             <EditText
                 android:id="@+id/edtName"
@@ -56,6 +56,19 @@
 
             <EditText
                 android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--Thong tin ngay sinh-->
+
+            <TextView
+                android:id="@+id/tvBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_change_birthdate" />
+
+            <EditText
+                android:id="@+id/edtBirthDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -95,6 +108,19 @@
 
             <EditText
                 android:id="@+id/edtPassport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--Thay doi thong tin chuyen nganh-->
+
+            <TextView
+                android:id="@+id/tvSpeciality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_change_speciality" />
+
+            <EditText
+                android:id="@+id/edtSpeciality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

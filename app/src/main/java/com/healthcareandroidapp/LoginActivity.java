@@ -81,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //Lay thong tu form dang nhap
         userName = (AutoCompleteTextView) findViewById(R.id.username);
-        populateAutoComplete();
 
         password = (EditText) findViewById(R.id.password_edit_text);
 

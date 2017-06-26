@@ -100,26 +100,7 @@ public class Connection {
         try {
             doctorJSON = new JSONObject(doctorInfo);
 
-//            HttpURLConnection urlConnection = null;
-//            URL url = new URL(host + "/doctor/register/" + doctorJSON.toString());
-//            urlConnection = (HttpURLConnection) url.openConnection();
-//            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
-//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//            String line, response = "";
-//            do {
-//                line = bufferedReader.readLine();
-//                if (line != null) response += line;
-//            } while (line != null);
-//
-//            Log.v("result", response);
-//
-//            urlConnection.disconnect();
-
-        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         String s = "";
@@ -170,28 +151,38 @@ public class Connection {
     }
 
     public static boolean changeInfo(String doctorInfo) {
-        //TODO
+        JSONObject doctorJSON = null;
 
         try {
-            HttpURLConnection urlConnection = null;
-            URL url = new URL(host + "/doctor/update/"); //TODO
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line, response = "";
-            do {
-                line = bufferedReader.readLine();
-                if (line != null) response += line;
-            } while (line != null);
+            doctorJSON = new JSONObject(doctorInfo);
 
-
-            urlConnection.disconnect();
-
-        } catch (IOException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+        String s = "";
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(host + "/doctor/register/");
+            List<NameValuePair> list = new ArrayList<>();
+            list.add(new BasicNameValuePair("id", doctorJSON.getString("idDoctor")));
+            list.add(new BasicNameValuePair("password", doctorJSON.getString("password")));
+            list.add(new BasicNameValuePair("name", doctorJSON.getString("nameDoctor")));
+            list.add(new BasicNameValuePair("specialty", doctorJSON.getString("nameSpecialty")));
+            list.add(new BasicNameValuePair("degree", doctorJSON.getString("degree")));
+            list.add(new BasicNameValuePair("experience", doctorJSON.getString("experience")));
+            list.add(new BasicNameValuePair("email", doctorJSON.getString("email")));
+            list.add(new BasicNameValuePair("doctorAddress", doctorJSON.getString("doctorAddress")));
+            list.add(new BasicNameValuePair("phone", doctorJSON.getString("phone")));
+            list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
+            httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
+            System.out.println("List: " + list.toString());
+            HttpResponse httpResponse = httpClient.execute(httpPost);
 
-
+            s = readResponse(httpResponse);
+            System.out.println(s);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return true;
     }
 
