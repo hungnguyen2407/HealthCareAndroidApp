@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -114,6 +115,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void register() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(RegisterActivity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(loginForm.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN);
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
@@ -210,6 +214,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            InputMethodManager imm = (InputMethodManager) getSystemService(RegisterActivity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(loginForm.getWindowToken(),
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN);
             authenTask = new UserLoginTask(userName, password);
             authenTask.execute((Void) null);
         }
@@ -374,6 +381,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void forget() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(loginForm.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN);
         Intent intent = new Intent(this, ForgetPassActivity.class);
         startActivity(intent);
     }

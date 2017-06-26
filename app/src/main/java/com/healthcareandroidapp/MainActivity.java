@@ -106,18 +106,15 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         TextView header = (TextView) findViewById(R.id.welcome);
         ScrollView homeContent = (ScrollView) findViewById(R.id.homeContent);
-        TextView workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
-
-
+        header.setVisibility(View.GONE);
+        ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
+        workScheduleView.setVisibility(View.GONE);
         //Xu ly su kien nav lich lam viec
         if (id == R.id.nav_work_schedule) {
-
-            header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
-            ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
+            contentFrame.setVisibility(View.GONE);
             workScheduleView.setVisibility(View.VISIBLE);
-            this.workScheduleTV = (TextView) findViewById(R.id.workScheduleTextView);
             String doctorID = null;
             try {
                 doctorID = doctorJSON.getString("idDoctor");
@@ -145,16 +142,16 @@ public class MainActivity extends AppCompatActivity
 
         //Xu ly su kien nav danh sach benh nhan
         else if (id == R.id.nav_patient_list) {
-            header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
+            contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new PatientListFragment()).commit();
         }
 
 
         //Xu ly su kien nav lien he
         else if (id == R.id.nav_communicate) {
-            header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
+            contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new CommunicationFragment()).commit();
         }
 
@@ -173,7 +170,6 @@ public class MainActivity extends AppCompatActivity
         //Xu ly su kien nav trang chu
         else if (id == R.id.nav_home) {
             homeHanle();
-            header.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
             contentFrame.setVisibility(View.GONE);
         }
@@ -182,19 +178,31 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_setting) {
             header.setVisibility(View.GONE);
             homeContent.setVisibility(View.GONE);
+            contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
 
+        }
+
+        else if(id == R.id.nav_messages)
+        {
+
+        }
+        else if(id == R.id.nav_info)
+        {
+            homeContent.setVisibility(View.GONE);
+            contentFrame.setVisibility(View.VISIBLE);
+            fragmentManager.beginTransaction().replace(R.id.contentFrame, new InfoFragment()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void setDoctorJSON(JSONObject doctorJSON)
-    {
+    public void setDoctorJSON(JSONObject doctorJSON) {
         this.doctorJSON = doctorJSON;
         return;
     }
+
     public JSONObject getDoctorJSON() {
         return doctorJSON;
     }

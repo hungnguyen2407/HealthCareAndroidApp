@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -83,6 +84,9 @@ public class ForgetPassActivity extends AppCompatActivity {
         } else {
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.forget_pass_progress);
             progressBar.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(ForgetPassActivity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(emailView.getWindowToken(),
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN);
             ScrollView scrollView = (ScrollView) findViewById(R.id.forget_form);
             scrollView.setVisibility(View.GONE);
             UserForgetPassTask userForgetPassTask = new UserForgetPassTask(emailView.getText().toString());

@@ -25,8 +25,4 @@ public class WorkScheduleFragment extends Fragment {
 
     }
 
-    public TextView getWorkScheduleTextView()
-    {
-        return (TextView) workScheduleView.findViewById(R.id.workScheduleTextView);
-    }
 }

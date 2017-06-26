@@ -20,4 +20,6 @@ public class PatientListFragment extends Fragment {
         patientListView = inflater.inflate(R.layout.patient_list_layout, container, false);
         return patientListView;
     }
+
+
 }

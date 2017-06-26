@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:text="Thông Tin Sản Phẩm"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="\nGiảng viên hướng dẫn\n"
+        android:textSize="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Nguyễn Thị Thanh Thủy\n\n"
+        android:textSize="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Đội ngũ phát triển"
+        android:textSize="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phạm Trang Linh Đan\n\n(Thiết kế cơ sở dữ liệu và Kiểm thử)\n\nNguyễn Hoàng Hưng\n(Android Dev và Kiểm thử)\n\nĐỗ Nguyên Tú\n(Thiết kế hệ thống và giám sát hạ tầng)\n\nNhan Vương Ngọc Bảo\n(Giám sát và Đánh giá)"
+        android:gravity="center"
+        android:textSize="15dp"/>
+</LinearLayout>
