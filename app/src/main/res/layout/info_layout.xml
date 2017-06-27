@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="\nGiảng viên hướng dẫn\n"
-        android:textSize="20dp"/>
+        android:textSize="25dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +26,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Đội ngũ phát triển"
-        android:textSize="20dp"/>
+        android:textSize="25dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Phạm Trang Linh Đan\n\n(Thiết kế cơ sở dữ liệu và Kiểm thử)\n\nNguyễn Hoàng Hưng\n(Android Dev và Kiểm thử)\n\nĐỗ Nguyên Tú\n(Thiết kế hệ thống và giám sát hạ tầng)\n\nNhan Vương Ngọc Bảo\n(Giám sát và Đánh giá)"
+        android:text="\nPhạm Trang Linh Đan\n\nNguyễn Hoàng Hưng\n\nĐỗ Nguyên Tú\n\nNhan Vương Ngọc Bảo\n"
         android:gravity="center"
-        android:textSize="15dp"/>
+        android:textSize="20dp"/>
 </LinearLayout>
