@@ -17,6 +17,7 @@
         android:id="@+id/btn_change_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/setting_change_info_action" />
 
 
@@ -182,7 +183,8 @@
         android:id="@+id/btn_change_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setting_change_password_action" />
+        android:text="@string/setting_change_password_action"
+        android:layout_margin="10dp"/>
 
     <ScrollView
         android:id="@+id/setting_sv_change_password"

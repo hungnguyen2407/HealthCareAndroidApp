@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="Tin Nhắn"
+        android:gravity="center"/>
+    <ScrollView
+        android:id="@+id/messages_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:text="Bênh nhân A"
+                android:gravity="center"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:text="Bênh nhân B"
+                android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Bênh nhân C"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:text="Bênh nhân D"
+                android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messgages_content"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/messages_content_per1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/messages_content_per2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="right"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -44,8 +44,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="20dp"
-                    app:srcCompat="@drawable/ic_launcher" />
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_launcher"
+                    android:layout_gravity="top"/>
 
                 <TextView
                     android:id="@+id/homeInfo"
@@ -74,9 +75,14 @@
                 android:gravity="center"
                 android:text="Lịch Làm Việc"
                 android:textSize="30dp" />
-
-
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:id="@+id/workScheduleTV"
+                android:textSize="20dp"
+                android:gravity="left"/>
         </LinearLayout>
     </ScrollView>
     <FrameLayout

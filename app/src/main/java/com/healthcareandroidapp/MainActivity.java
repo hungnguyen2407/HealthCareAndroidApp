@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         TextView header = (TextView) findViewById(R.id.welcome);
         homeHanle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        workScheduleTV = (TextView) findViewById(R.id.workScheduleTV);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,17 +121,23 @@ public class MainActivity extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorID);
-            workScheduleTask.execute((Void) null);
+
             SharedPreferences sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
             try {
-                workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
+                if (sp.getString("workScheduleList", "").equals("")) {
+                    WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorID);
+                    workScheduleTask.execute((Void) null);
+                } else
+                    workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
 
                 workScheduleListJSONArray = workScheduleListJSON.getJSONArray("scheduleList");
+                String text = "";
                 for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
                     JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
-                    setTextWorkSchedule(workScheduleJSON.getString("dates"), workScheduleJSON.getString("startTimeClock"), workScheduleJSON.getString("stopTimeClock"), workScheduleJSON.getString("workspace"));
+                    text += "Thứ " + workScheduleJSON.getString("dates")+"\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) +"\nPhòng làm việc " + workScheduleJSON.getString("workspace")+"\n\n";
                 }
+                workScheduleTV.setText(text);
+                Log.v("TV", workScheduleTV.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -181,14 +187,11 @@ public class MainActivity extends AppCompatActivity
             contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
 
-        }
-
-        else if(id == R.id.nav_messages)
-        {
-
-        }
-        else if(id == R.id.nav_info)
-        {
+        } else if (id == R.id.nav_messages) {
+            homeContent.setVisibility(View.GONE);
+            contentFrame.setVisibility(View.VISIBLE);
+            fragmentManager.beginTransaction().replace(R.id.contentFrame, new MessagesFragment()).commit();
+        } else if (id == R.id.nav_info) {
             homeContent.setVisibility(View.GONE);
             contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new InfoFragment()).commit();
@@ -251,17 +254,23 @@ public class MainActivity extends AppCompatActivity
         TextView homeContent = (TextView) findViewById(R.id.homeInfo);
         try {
             JSONObject specialityJSON = doctorJSON.getJSONObject("specialty");
-            homeContent.setText("\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSố điện thoại: " + doctorJSON.getString("phone") + "\nEmail: " + doctorJSON.getString("email") + "\nĐịa chỉ: " + doctorJSON.getString("address") + "\nChuyên ngành: " + specialityJSON.getString("nameSpecialty") + "\nBằng cấp: " + doctorJSON.getString("degree") + "\nKinh nghiệm: " + doctorJSON.getString("experience"));
+            homeContent.setText("\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSĐT: " + doctorJSON.getString("phone") + "\nEmail: " + doctorJSON.getString("email") + "\nĐịa chỉ: " + doctorJSON.getString("address") + "\nChuyên ngành: " + specialityJSON.getString("nameSpecialty") + "\nBằng cấp: " + doctorJSON.getString("degree") + "\nKinh nghiệm: " + doctorJSON.getString("experience"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void setTextWorkSchedule(String dates, String startTime, String stopTime, String workspace) {
-        workScheduleTV.setText("Thứ " + dates);
-        workScheduleTV.setText("Giờ làm việc từ " + startTime + " đến " + stopTime);
-        workScheduleTV.setText("Phòng làm việc " + workspace);
-        workScheduleTV.setText("\n\n");
+    private String getTime(int time) {
+        int d = time / 86400;
+        int h = (time % 86400) / 3600;
+        int m = (time % 86400 % 3600) / 60;
+        StringBuffer sb = new StringBuffer();
+        if (d > 0) {
+            sb.append(d + "d");
+        }
+        sb.append(h + "h");
+        sb.append(m + "m");
+        return sb.toString();
     }
 }

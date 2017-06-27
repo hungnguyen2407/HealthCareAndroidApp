@@ -33,7 +33,6 @@ import java.util.List;
 
 public class Connection {
     //Gia tri dia chi cua may chu web service
-    //TODO: Cho dia chi may chu that
 //    private static String host = "http://10.0.2.2:8080/HealthCare/rest";
     private static String host = "http://healthcare21617.azurewebsites.net/rest";
 
@@ -53,6 +52,7 @@ public class Connection {
                 if (line != null) response += line;
             } while (line != null);
             workScheduleJSON = new JSONObject(response);
+
             urlConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
