@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <Button
+                android:id="@+id/messages_btn_patientA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
@@ -31,6 +32,7 @@
                 android:textSize="20dp"
                 android:layout_margin="10dp"
                 android:text="Bênh nhân B"
+                android:id="@+id/messages_btn_patientB"
                 android:gravity="center"
                 android:background="@color/colorPrimaryDark"
                 android:textColor="@android:color/white"/>
@@ -40,6 +42,7 @@
                 android:textSize="20dp"
                 android:layout_margin="10dp"
                 android:gravity="center"
+                android:id="@+id/messages_btn_patientC"
                 android:text="Bênh nhân C"/>
             <Button
                 android:layout_width="match_parent"
@@ -47,6 +50,7 @@
                 android:textSize="20dp"
                 android:layout_margin="10dp"
                 android:text="Bênh nhân D"
+                android:id="@+id/messages_btn_patientD"
                 android:gravity="center"
                 android:background="@color/colorPrimaryDark"
                 android:textColor="@android:color/white"/>
@@ -55,7 +59,100 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/messgages_content"
+        android:id="@+id/messgages_content_patientA"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/messages_content_per1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/messages_content_per2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="right"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messgages_content_patientB"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/messages_content_per1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/messages_content_per2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="right"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messgages_content_patientC"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/messages_content_per1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/messages_content_per2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Noi dung"
+                android:gravity="right"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messgages_content_patientD"
         android:visibility="gone">
 
         <LinearLayout

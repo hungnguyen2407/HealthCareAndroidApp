@@ -35,5 +35,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ForgetPassActivity"></activity>
     </application>
-
+    <receiver android:name=".LoginActivity">
+        <intent-filter>
+            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        </intent-filter>
+    </receiver>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

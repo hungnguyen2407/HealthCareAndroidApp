@@ -18,6 +18,7 @@ public class PatientListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         patientListView = inflater.inflate(R.layout.patient_list_layout, container, false);
+
         return patientListView;
     }
 

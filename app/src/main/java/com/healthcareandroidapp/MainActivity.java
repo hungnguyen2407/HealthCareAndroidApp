@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     public JSONArray workScheduleListJSONArray = null;
     public String fileName = "doctorInfo";
     public TextView workScheduleTV;
+    public Button createWorkSchedul;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +52,15 @@ public class MainActivity extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        createWorkSchedul = (Button) findViewById(R.id.create_work_shedule);
 
+        createWorkSchedul.setVisibility(View.GONE);
         TextView header = (TextView) findViewById(R.id.welcome);
         homeHanle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         workScheduleTV = (TextView) findViewById(R.id.workScheduleTV);
+//        setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -108,6 +114,7 @@ public class MainActivity extends AppCompatActivity
         ScrollView homeContent = (ScrollView) findViewById(R.id.homeContent);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
         header.setVisibility(View.GONE);
+        createWorkSchedul.setVisibility(View.GONE);
         ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
         workScheduleView.setVisibility(View.GONE);
         //Xu ly su kien nav lich lam viec
@@ -115,6 +122,16 @@ public class MainActivity extends AppCompatActivity
             homeContent.setVisibility(View.GONE);
             contentFrame.setVisibility(View.GONE);
             workScheduleView.setVisibility(View.VISIBLE);
+            createWorkSchedul.setVisibility(View.VISIBLE);
+            createWorkSchedul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    findViewById(R.id.homeContent).setVisibility(View.GONE);
+                    findViewById(R.id.contentFrame).setVisibility(View.VISIBLE);
+                    findViewById(R.id.scrollViewWorkSchedule).setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, new RegisterWorkScheduleFragment()).commit();
+                }
+            });
             String doctorID = null;
             try {
                 doctorID = doctorJSON.getString("idDoctor");
@@ -134,7 +151,7 @@ public class MainActivity extends AppCompatActivity
                 String text = "";
                 for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
                     JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
-                    text += "Thứ " + workScheduleJSON.getString("dates")+"\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) +"\nPhòng làm việc " + workScheduleJSON.getString("workspace")+"\n\n";
+                    text += "Thứ " + workScheduleJSON.getString("dates") + "\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) + "\nPhòng làm việc " + workScheduleJSON.getString("workspace") + "\n\n";
                 }
                 workScheduleTV.setText(text);
                 Log.v("TV", workScheduleTV.getText().toString());
@@ -164,13 +181,7 @@ public class MainActivity extends AppCompatActivity
         //Xu ly su kien nav dang xuat
         else if (id == R.id.nav_logout) {
             //Xoa du lieu dang nhap trong may
-            doctorJSON = null;
-            SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("doctorJSON", "");
-            editor.commit();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            logout();
         }
 
         //Xu ly su kien nav trang chu
@@ -187,11 +198,13 @@ public class MainActivity extends AppCompatActivity
             contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new SettingFragment()).commit();
 
-        } else if (id == R.id.nav_messages) {
-            homeContent.setVisibility(View.GONE);
-            contentFrame.setVisibility(View.VISIBLE);
-            fragmentManager.beginTransaction().replace(R.id.contentFrame, new MessagesFragment()).commit();
-        } else if (id == R.id.nav_info) {
+        }
+//        else if (id == R.id.nav_messages) {
+//            homeContent.setVisibility(View.GONE);
+//            contentFrame.setVisibility(View.VISIBLE);
+//            fragmentManager.beginTransaction().replace(R.id.contentFrame, new MessagesFragment()).commit();
+//        }
+        else if (id == R.id.nav_info) {
             homeContent.setVisibility(View.GONE);
             contentFrame.setVisibility(View.VISIBLE);
             fragmentManager.beginTransaction().replace(R.id.contentFrame, new InfoFragment()).commit();
@@ -201,10 +214,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
     public void setDoctorJSON(JSONObject doctorJSON) {
         this.doctorJSON = doctorJSON;
         return;
     }
+
 
     public JSONObject getDoctorJSON() {
         return doctorJSON;
@@ -259,6 +274,16 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    public void logout() {
+        doctorJSON = null;
+        SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("doctorJSON", "");
+        editor.commit();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     private String getTime(int time) {

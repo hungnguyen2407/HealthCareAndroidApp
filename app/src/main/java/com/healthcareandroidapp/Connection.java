@@ -162,7 +162,7 @@ public class Connection {
         String s = "";
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(host + "/doctor/register/");
+            HttpPost httpPost = new HttpPost(host + "/doctor/update/info/"+doctorJSON.getString("idDoctor"));
             List<NameValuePair> list = new ArrayList<>();
             list.add(new BasicNameValuePair("id", doctorJSON.getString("idDoctor")));
             list.add(new BasicNameValuePair("password", doctorJSON.getString("password")));
@@ -210,4 +210,28 @@ public class Connection {
         }
         return !response.equals("");
     }
+
+    public static boolean sendMessages(String doctorID, String userID, String content) {
+        try {
+            String s = "";
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(host + "/messages/conversation/doctor/");
+            List<NameValuePair> list = new ArrayList<>();
+            list.add(new BasicNameValuePair("idDoctor", doctorID));
+            list.add(new BasicNameValuePair("idUser", userID));
+            list.add(new BasicNameValuePair("content", content));
+
+            httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
+            System.out.println("List: " + list.toString());
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+
+            s = readResponse(httpResponse);
+            System.out.println(s);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return true;
+    }
+
+
 }

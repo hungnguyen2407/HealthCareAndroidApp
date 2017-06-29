@@ -64,7 +64,16 @@
     <string name="setting_confirm_new_password">Xác nhận mật khẩu mới</string>
     <string name="setting_old_password">Mật khẩu cũ</string>
 
-
+    <!--String dung cho register work schedule UI-->
+    <string-array name="dates_list">
+        <item>Thứ 2</item>
+        <item>Thứ 3</item>
+        <item>Thứ 4</item>
+        <item>Thứ 5</item>
+        <item>Thứ 6</item>
+        <item>Thứ 7</item>
+        <item>Chủ Nhật</item>
+    </string-array>
     <!-- String dùng cho sign in UI -->
     <string name="login_user_name">Tài khoản</string>
     <string name="login_password">Mật khẩu</string>

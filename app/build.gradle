@@ -45,6 +45,8 @@ android {
     packagingOptions {
         exclude 'NOTICE'
     }
+
+
 }
 
 dependencies {

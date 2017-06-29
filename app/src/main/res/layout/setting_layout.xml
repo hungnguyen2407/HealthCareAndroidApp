@@ -25,7 +25,7 @@
         android:id="@+id/setting_sv_change_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
 
@@ -35,137 +35,177 @@
 
 
             <!--Thay doi thong tin ten bac si-->
-
-            <TextView
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_name" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_name" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <!--Thong tin email-->
-
-            <TextView
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_email" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_email" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Thong tin ngay sinh-->
-
             <TextView
-                android:id="@+id/tvBirthDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/setting_change_birthdate" />
+                android:text="Ngày sinh" />
 
-            <EditText
-                android:id="@+id/edtBirthDate"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tvBirthDate"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="left">
+
+                    <EditText
+                        android:id="@+id/edtBirthDateDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ngày" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/edtBirthDateMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Tháng" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="right">
+
+                    <EditText
+                        android:id="@+id/edtBirthDateYear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Năm" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <!--Thay doi thong tin sdt-->
-
-            <TextView
-                android:id="@+id/tvPhone"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_phone" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_phone" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <!--Thay doi thong tin dia chi-->
-
-            <TextView
-                android:id="@+id/tvAddress"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_address" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_address" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Thay doi thong tin passport-->
-
-            <TextView
-                android:id="@+id/tvPassport"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_passport" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtPassport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtPassport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_passport" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Thay doi thong tin chuyen nganh-->
-
-            <TextView
-                android:id="@+id/tvSpeciality"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_speciality" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtSpeciality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtSpeciality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_speciality" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Thay doi thong tin bang cap-->
-
-            <TextView
-                android:id="@+id/tvDegree"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_degree" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtDegree"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/edtDegree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_degree" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Thay doi thong tin kinh nghiem-->
 
-            <TextView
-                android:id="@+id/tvExperience"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_change_experience" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edtExperience"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                <EditText
+                    android:id="@+id/edtExperience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/setting_change_experience" />
+            </android.support.design.widget.TextInputLayout>
 
             <!--Xac nhan mat khau de thay doi-->
-
-            <TextView
-                android:id="@+id/tvPassword"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tvName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_confirm_password" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="@string/setting_confirm_password"/>
 
-            <EditText
-                android:id="@+id/edtPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_confirm_change_info"
@@ -183,8 +223,8 @@
         android:id="@+id/btn_change_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setting_change_password_action"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:text="@string/setting_change_password_action" />
 
     <ScrollView
         android:id="@+id/setting_sv_change_password"

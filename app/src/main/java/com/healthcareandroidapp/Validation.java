@@ -34,16 +34,81 @@ public class Validation {
         return phone.length() > 10;
     }
 
-    public static boolean isExperienceValid(String experience)
-    {
+    public static boolean isExperienceValid(String experience) {
         try {
             Integer.parseInt(experience);
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         // only got here if we didn't return false
+        return true;
+    }
+
+    public static boolean isBirthDate(String date, String month, String year) {
+
+        try {
+            int dateNum = Integer.parseInt(date);
+            int monthNum = Integer.parseInt(month);
+            int yearNum = Integer.parseInt(year);
+
+            if (dateNum < 0 || dateNum > 31)
+                return false;
+            if (monthNum < 0 || monthNum > 12)
+                return false;
+            if (yearNum < 0 || yearNum > 2100)
+                return false;
+
+            switch (monthNum)
+            {
+                case 1:
+                    if(dateNum>31)
+                        return false;
+                case 2:
+                    if (yearNum%4==0&&yearNum%100!=0)
+                        if(dateNum>29)
+                            return false;
+                    else
+                        if(dateNum>28)
+                            return false;
+                case 3:
+                    if(dateNum>31)
+                        return false;
+                case 4:
+                    if (dateNum>30)
+                        return false;
+                case 5:
+                    if(dateNum>31)
+                        return false;
+                case 6:
+                    if(dateNum>30)
+                        return false;
+                case 7:
+                    if(dateNum>31)
+                        return false;
+                case 8:
+                    if (dateNum>31)
+                        return false;
+                case 9:
+                    if(dateNum>30)
+                        return false;
+                case 10:
+                    if(dateNum>31)
+                        return false;
+                case 11:
+                    if(dateNum>30)
+                        return false;
+                case 12:
+                    if(dateNum>31)
+                        return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+
         return true;
     }
 

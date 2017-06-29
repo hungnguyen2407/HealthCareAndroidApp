@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,13 @@ import org.json.JSONObject;
 public class SettingFragment extends Fragment {
     private View settingView;
     private JSONObject doctorJSON = null;
+    private MainActivity mainActivity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         doctorJSON = mainActivity.getDoctorJSON();
         settingView = inflater.inflate(R.layout.setting_layout, container, false);
         settingHandle();
@@ -73,49 +75,48 @@ public class SettingFragment extends Fragment {
         btnConfirmChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText edtNewPassword = (EditText) settingView.findViewById(R.id.edtNewPassword);
-                String newPassword = edtNewPassword.getText().toString();
-                EditText edtConfirmNewPassword = (EditText) settingView.findViewById(R.id.edtConfirmNewPassword);
-                String confirmNewPassword = edtNewPassword.getText().toString();
-                EditText edtOldPassword = (EditText) settingView.findViewById(R.id.edtOldPassword);
-                String oldPassword = edtNewPassword.getText().toString();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(),
+                        InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Xác nhận thay đổi mật khẩu");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (changePasswordHandle()) {
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
+                                    alertDialog1.setTitle("Thông Báo");
+                                    alertDialog1.setMessage("Thay đổi mật khẩu thành công");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog1.show();
+                                } else {
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
+                                    alertDialog1.setTitle("Thông Báo");
+                                    alertDialog1.setMessage("Thay đổi mật khẩu không thành công");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog1.show();
+                                }
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Huỷ bỏ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
 
-                EditText focusEdit = null;
-                boolean cancel = false;
-                if (TextUtils.isEmpty(oldPassword)) {
-                    edtOldPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtOldPassword;
-                    cancel = true;
-
-                } else if (!Validation.isPasswordValid(oldPassword)) {
-                    edtOldPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtOldPassword;
-                    cancel = true;
-                }
-
-                if (TextUtils.isEmpty(newPassword)) {
-                    edtNewPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtNewPassword;
-                    cancel = true;
-                } else if (!Validation.isPasswordValid(newPassword)) {
-                    edtNewPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtNewPassword;
-                    cancel = true;
-                }
-
-                if (TextUtils.isEmpty(confirmNewPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_field_required));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                } else if (!Validation.isPasswordValid(confirmNewPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_password));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                } else if (!confirmNewPassword.equals(newPassword)) {
-                    edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_confirm_password));
-                    focusEdit = edtConfirmNewPassword;
-                    cancel = true;
-                }
 
             }
         });
@@ -124,7 +125,7 @@ public class SettingFragment extends Fragment {
         btnConfirmChangeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(),
                         InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
@@ -147,7 +148,7 @@ public class SettingFragment extends Fragment {
                                 } else {
                                     AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog1.setTitle("Thông Báo");
-                                    alertDialog1.setMessage("Thay đổi không thông tin thành công");
+                                    alertDialog1.setMessage("Thay đổi thông tin không thành công");
                                     alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -171,6 +172,68 @@ public class SettingFragment extends Fragment {
 
     }
 
+    //Still not optimized
+    private boolean changePasswordHandle() {
+        //Lay thong tin tu view
+        EditText edtNewPassword = (EditText) settingView.findViewById(R.id.edtNewPassword);
+        String newPassword = edtNewPassword.getText().toString();
+        EditText edtConfirmNewPassword = (EditText) settingView.findViewById(R.id.edtConfirmNewPassword);
+        String confirmNewPassword = edtNewPassword.getText().toString();
+        EditText edtOldPassword = (EditText) settingView.findViewById(R.id.edtOldPassword);
+        String oldPassword = edtNewPassword.getText().toString();
+
+        EditText focusEdit = null;
+        boolean cancel = false;
+        if (TextUtils.isEmpty(oldPassword)) {
+            edtOldPassword.setError(getString(R.string.register_error_field_required));
+            focusEdit = edtOldPassword;
+            cancel = true;
+
+        } else if (!Validation.isPasswordValid(oldPassword)) {
+            edtOldPassword.setError(getString(R.string.register_error_invalid_password));
+            focusEdit = edtOldPassword;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(newPassword)) {
+            edtNewPassword.setError(getString(R.string.register_error_field_required));
+            focusEdit = edtNewPassword;
+            cancel = true;
+        } else if (!Validation.isPasswordValid(newPassword)) {
+            edtNewPassword.setError(getString(R.string.register_error_invalid_password));
+            focusEdit = edtNewPassword;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(confirmNewPassword)) {
+            edtConfirmNewPassword.setError(getString(R.string.register_error_field_required));
+            focusEdit = edtConfirmNewPassword;
+            cancel = true;
+        } else if (!Validation.isPasswordValid(confirmNewPassword)) {
+            edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_password));
+            focusEdit = edtConfirmNewPassword;
+            cancel = true;
+        } else if (!confirmNewPassword.equals(newPassword)) {
+            edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_confirm_password));
+            focusEdit = edtConfirmNewPassword;
+            cancel = true;
+        }
+
+        //Gui thong tin cap nhat
+        UserChangePasswordTask userPasswordTask = null;
+        try {
+            Log.v("doctorJSON", doctorJSON.toString());
+            JSONObject specialty = doctorJSON.getJSONObject("specialty");
+            //TODO
+//            userPasswordTask = new UserChangePasswordTask(doctorJSON.getString("idDoctor"), newPassword, doctorJSON.getString("nameDoctor"), specialty.getString("nameSpecialty"), doctorJSON.getString("degree"), doctorJSON.getString("experience"), doctorJSON.getString("email"), doctorJSON.getString("address"), doctorJSON.getString("phone"), doctorJSON.getString("passport"), doctorJSON.getString("birthDate"));
+            userPasswordTask.execute((Void) null);
+            mainActivity.logout();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     private boolean changeInfoHandle() {
         //Lay thong tin tu view
         EditText edtName = (EditText) settingView.findViewById(R.id.edtName);
@@ -182,23 +245,30 @@ public class SettingFragment extends Fragment {
         EditText edtExperience = (EditText) settingView.findViewById(R.id.edtExperience);
         EditText edtPassport = (EditText) settingView.findViewById(R.id.edtPassport);
         EditText edtPassword = (EditText) settingView.findViewById(R.id.edtPassword);
-        EditText edtBirthDate = (EditText) settingView.findViewById(R.id.edtBirthDate);
+        EditText edtBirthDateDate = (EditText) settingView.findViewById(R.id.edtBirthDateDate);
+        EditText edtBirthDateMonth = (EditText) settingView.findViewById(R.id.edtBirthDateMonth);
+        EditText edtBirthDateYear = (EditText) settingView.findViewById(R.id.edtBirthDateYear);
         try {
 
             String password = edtPassword.getText().toString();
-            if (!password.equals(doctorJSON.getString("passwords"))) {
+            if (TextUtils.isEmpty(password)) {
+                edtPassword.setError(getString(R.string.error_field_required));
+                return false;
+            } else if (!password.equals(doctorJSON.getString("passwords"))) {
                 edtPassword.setError("Sai mật khẩu");
                 return false;
             }
+
             String id = doctorJSON.getString("idDoctor");
             String name = edtName.getText().toString();
             if (TextUtils.isEmpty(name)) {
-                name = doctorJSON.getString("name");
+                name = doctorJSON.getString("nameDoctor");
             }
 
+            JSONObject specialtyJSON = doctorJSON.getJSONObject("specialty");
             String speciality = edtSpeciality.getText().toString();
             if (TextUtils.isEmpty(speciality)) {
-                speciality = doctorJSON.getString("nameSpecialty");
+                speciality = specialtyJSON.getString("nameSpecialty");
             }
 
             String degree = edtDegree.getText().toString();
@@ -231,13 +301,34 @@ public class SettingFragment extends Fragment {
                 passport = doctorJSON.getString("passport");
             }
 
-            String birthDate = edtBirthDate.getText().toString();
-            if (TextUtils.isEmpty(birthDate)) {
-                birthDate = doctorJSON.getString("birthDate");
+            String birthDateDate = edtBirthDateDate.getText().toString();
+            if (TextUtils.isEmpty(birthDateDate)) {
+                edtBirthDateDate.setError(getString(R.string.error_field_required));
+                return false;
+//                birthDateDate = doctorJSON.getString("birthDate");
+                //TODO
             }
-
+            String birthDateMonth = edtBirthDateMonth.getText().toString();
+            if (TextUtils.isEmpty(birthDateMonth)) {
+                edtBirthDateMonth.setError(getString(R.string.error_field_required));
+                return false;
+//                birthDateMonth = doctorJSON.getString("birthDate");
+                //TODO
+            }
+            String birthDateYear = edtBirthDateYear.getText().toString();
+            if (TextUtils.isEmpty(birthDateYear)) {
+                edtBirthDateYear.setError(getString(R.string.error_field_required));
+                return false;
+//                birthDateYear = doctorJSON.getString("birthDate");
+                //TODO
+            }
+            if(!Validation.isBirthDate(birthDateDate,birthDateMonth,birthDateYear))
+            {
+                return false;
+            }
             //Gui thong tin cap nhat
-            UserChangeInfoTask userChangeInfoTask = new UserChangeInfoTask(id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
+
+            UserChangeInfoTask userChangeInfoTask = new UserChangeInfoTask(id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear);
             userChangeInfoTask.execute((Void) null);
 
         } catch (JSONException e) {
@@ -248,11 +339,10 @@ public class SettingFragment extends Fragment {
 
     class UserChangePasswordTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String id, userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
+        private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
 
-        UserChangePasswordTask(String id, String userName, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
+        UserChangePasswordTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
             this.id = id;
-            this.userName = userName;
             this.password = password;
             this.name = name;
             this.speciality = speciality;
@@ -262,13 +352,15 @@ public class SettingFragment extends Fragment {
             this.doctorAddress = doctorAddress;
             this.phone = phone;
             this.passport = passport;
-            this.birthDate = birthDate;
+            this.birthDateDate = birthDateDate;
+            this.birthDateMonth = birthDateMonth;
+            this.birthDateYear = birthDateYear;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            String doctorInfo = "{\"id\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"username\":\"" + userName + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate + "\"}";
+            String doctorInfo = "{\"id\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDateDate\":\"" + birthDateDate + "\",\"birthDateMonth\":\"" + birthDateMonth + "\",\"birthDateYear\":\"" + birthDateYear + "\"}";
             //Gui thong tin cap nhat
             return Connection.changeInfo(doctorInfo);
 
@@ -285,9 +377,9 @@ public class SettingFragment extends Fragment {
 
 
     class UserChangeInfoTask extends AsyncTask<Void, Void, Boolean> {
-        private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
+        private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
 
-        UserChangeInfoTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
+        UserChangeInfoTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
             this.id = id;
 
             this.password = password;
@@ -299,7 +391,9 @@ public class SettingFragment extends Fragment {
             this.doctorAddress = doctorAddress;
             this.phone = phone;
             this.passport = passport;
-            this.birthDate = birthDate;
+            this.birthDateDate = birthDateDate;
+            this.birthDateMonth = birthDateMonth;
+            this.birthDateYear = birthDateYear;
         }
 
         @Override
