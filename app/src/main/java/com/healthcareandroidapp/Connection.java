@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -52,7 +53,6 @@ public class Connection {
                 if (line != null) response += line;
             } while (line != null);
             workScheduleJSON = new JSONObject(response);
-
             urlConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,18 +106,19 @@ public class Connection {
         String s = "";
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(host + "/doctor/register/");
+            HttpPost httpPost = new HttpPost(host + "/doctor/register");
             List<NameValuePair> list = new ArrayList<>();
-            list.add(new BasicNameValuePair("userName", doctorJSON.getString("username")));
+            list.add(new BasicNameValuePair("userName", doctorJSON.getString("userName")));
             list.add(new BasicNameValuePair("password", doctorJSON.getString("password")));
-            list.add(new BasicNameValuePair("name", doctorJSON.getString("nameDoctor")));
-            list.add(new BasicNameValuePair("specialty", doctorJSON.getString("nameSpecialty")));
+            list.add(new BasicNameValuePair("name", doctorJSON.getString("name")));
+            list.add(new BasicNameValuePair("specialty", doctorJSON.getString("specialty")));
             list.add(new BasicNameValuePair("degree", doctorJSON.getString("degree")));
             list.add(new BasicNameValuePair("experience", doctorJSON.getString("experience")));
             list.add(new BasicNameValuePair("email", doctorJSON.getString("email")));
             list.add(new BasicNameValuePair("doctorAddress", doctorJSON.getString("doctorAddress")));
             list.add(new BasicNameValuePair("phone", doctorJSON.getString("phone")));
             list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
+            list.add(new BasicNameValuePair("birthDate", doctorJSON.getString("birthDate")));
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
             System.out.println("List: " + list.toString());
             HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -162,7 +163,7 @@ public class Connection {
         String s = "";
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(host + "/doctor/update/info/"+doctorJSON.getString("idDoctor"));
+            HttpPost httpPost = new HttpPost(host + "/doctor/update/info/" + doctorJSON.getString("idDoctor"));
             List<NameValuePair> list = new ArrayList<>();
             list.add(new BasicNameValuePair("id", doctorJSON.getString("idDoctor")));
             list.add(new BasicNameValuePair("password", doctorJSON.getString("password")));
@@ -174,11 +175,13 @@ public class Connection {
             list.add(new BasicNameValuePair("doctorAddress", doctorJSON.getString("doctorAddress")));
             list.add(new BasicNameValuePair("phone", doctorJSON.getString("phone")));
             list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
+            list.add(new BasicNameValuePair("birthDate", doctorJSON.getString("birthDate")));
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
-            System.out.println("List: " + list.toString());
+
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
             s = readResponse(httpResponse);
+
             System.out.println(s);
         } catch (Exception e) {
             System.out.println(e);
@@ -188,27 +191,21 @@ public class Connection {
 
 
     public static boolean resetPass(String email) {
-        String line, response = "";
+        String s = "";
         try {
-            HttpURLConnection urlConnection = null;
-            URL url = new URL(host + "/doctor/forgetpassword/" + email);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            do {
-                line = bufferedReader.readLine();
-                if (line != null) response += line;
-            } while (line != null);
-
-            Log.v("result", response);
-
-            urlConnection.disconnect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(host + "/doctor/forgetpassword");
+            List<NameValuePair> list = new ArrayList<NameValuePair>();
+            list.add(new BasicNameValuePair("email", email));
+            httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
+            System.out.println("List: " + list.toString());
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            s = readResponse(httpResponse);
+            System.out.println(s);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        return !response.equals("");
+        return !s.equals("");
     }
 
     public static boolean sendMessages(String doctorID, String userID, String content) {
@@ -234,4 +231,48 @@ public class Connection {
     }
 
 
+    public static JSONObject getClinicList() {
+        JSONObject clinicListJSON = null;
+
+        try {
+            HttpURLConnection urlConnection = null;
+            URL url = new URL(host + "/clinic/all");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line, response = "";
+            do {
+                line = bufferedReader.readLine();
+                if (line != null) response += line;
+            } while (line != null);
+            clinicListJSON = new JSONObject(response);
+            urlConnection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return clinicListJSON;
+    }
+
+    public static String registWorkSchedule(String idDoctor, String dates, int startTime, int stopTime, String workspace) {
+        String s = "", scheduleList = "{\"scheduleList\":[{\"idSchedule\":\""+ new Random().nextInt(100000) +"\",\"dates\":\""+dates+"\",\"startTime\":\""+startTime+"\",\"stopTime\":\""+stopTime+"\",\"workspace\":\""+workspace+"\"}]}";
+        //TODO: Chua duoc
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost("http://healthcare21617.azurewebsites.net/rest/schedules/registry/list");
+            List<NameValuePair> list = new ArrayList<NameValuePair>();
+            list.add(new BasicNameValuePair("idDoctor", idDoctor));
+            list.add(new BasicNameValuePair("scheduleList", scheduleList));
+            httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return s;
+    }
 }

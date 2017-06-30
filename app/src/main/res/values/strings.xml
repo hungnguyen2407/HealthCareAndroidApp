@@ -65,6 +65,13 @@
     <string name="setting_old_password">Mật khẩu cũ</string>
 
     <!--String dung cho register work schedule UI-->
+    <string name="monday">monday</string>
+    <string name="tuesday">tuesday</string>
+    <string name="wednesday">wednesday</string>
+    <string name="thursday">thursday</string>
+    <string name="friday">friday</string>
+    <string name="saturday">saturday</string>
+    <string name="sunday">sunday</string>
     <string-array name="dates_list">
         <item>Thứ 2</item>
         <item>Thứ 3</item>
@@ -74,6 +81,16 @@
         <item>Thứ 7</item>
         <item>Chủ Nhật</item>
     </string-array>
+
+    <string-array name="times_list">
+        <item>Buổi Sáng (7h - 11h)</item>
+        <item>Buổi Trưa (12h - 17h)</item>
+        <item>Buổi Tối (18h - 22h)</item>
+    </string-array>
+
+    <string name="times_morning">Buổi Sáng (7h - 11h)</string>
+    <string name="times_afternoon">Buổi Trưa (12h - 17h)</string>
+    <string name="times_night">Buổi Tối (18h - 22h)</string>
     <!-- String dùng cho sign in UI -->
     <string name="login_user_name">Tài khoản</string>
     <string name="login_password">Mật khẩu</string>

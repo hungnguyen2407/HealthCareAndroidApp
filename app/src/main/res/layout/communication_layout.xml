@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Địa chỉ: 83 Võ Thị Sáu, Q.1, TP.HCM"
+        android:text="Địa chỉ: Trường Đại Học Nông Lâm, TP.HCM"
         android:gravity="center"
         android:textSize="20dp"
         />

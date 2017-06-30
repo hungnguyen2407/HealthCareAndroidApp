@@ -1,17 +1,15 @@
 package com.healthcareandroidapp;
 
-import android.app.Dialog;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.speech.tts.Voice;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.ContextThemeWrapper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,34 +21,19 @@ import android.widget.ScrollView;
 public class ForgetPassActivity extends AppCompatActivity {
 
     private EditText emailView;
-
+    private View progressBar, forgetForm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_pass);
-
+        forgetForm = (ScrollView) findViewById(R.id.forget_form);
         emailView = (EditText) findViewById(R.id.email_forget_pass);
 
-        Button btnSubmit = (Button) findViewById(R.id.submit_forget_password_button);
+        final Button btnSubmit = (Button) findViewById(R.id.submit_forget_password_button);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builder;
-//                builder = new AlertDialog.Builder(getBaseContext(), R.style.Theme_AppCompat);
-//                builder.setTitle("Xác nhận lấy lại mật khẩu")
-//                        .setMessage("Bạn có chác muốn lấy lại mật khẩu ?")
-//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                submit();
-//                            }
-//                        })
-//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        })
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .create();
+
                 submit();
             }
         });
@@ -63,7 +46,7 @@ public class ForgetPassActivity extends AppCompatActivity {
         });
     }
 
-    private void submit() {
+    private boolean submit() {
 
         //Kiem tra email
         String email = emailView.getText().toString();
@@ -73,24 +56,63 @@ public class ForgetPassActivity extends AppCompatActivity {
             this.emailView.setError("Hãy điền thông tin email");
             focus = emailView;
             cancel = true;
+            return false;
         } else if (!Validation.isEmailValid(email)) {
             this.emailView.setError("Email không hợp lệ");
             focus = emailView;
             cancel = true;
+            return false;
         }
 
         if (cancel) {
             focus.requestFocus();
         } else {
-            ProgressBar progressBar = (ProgressBar) findViewById(R.id.forget_pass_progress);
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar = (ProgressBar) findViewById(R.id.forget_pass_progress);
+            showProgress(true);
             InputMethodManager imm = (InputMethodManager) getSystemService(ForgetPassActivity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(emailView.getWindowToken(),
                     InputMethodManager.RESULT_UNCHANGED_SHOWN);
             ScrollView scrollView = (ScrollView) findViewById(R.id.forget_form);
             scrollView.setVisibility(View.GONE);
-            UserForgetPassTask userForgetPassTask = new UserForgetPassTask(emailView.getText().toString());
+            UserForgetPassTask userForgetPassTask = new UserForgetPassTask(email);
             userForgetPassTask.execute((Void) null);
+        }
+        return true;
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            forgetForm.setVisibility(show ? View.GONE : View.VISIBLE);
+            forgetForm.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    forgetForm.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            forgetForm.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -108,34 +130,40 @@ public class ForgetPassActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            return Connection.resetPass(email);
-        }
-    }
-
-    public static class ForgetPassDialog extends DialogFragment {
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Bạn có chắc muốn lấy lại mật khẩu ?")
-                    .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            ok();
-                        }
-                    })
-                    .setNegativeButton("Huỷ bỏ", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
-
-        public boolean ok() {
+            Connection.resetPass(email);
             return true;
         }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            showProgress(false);
+
+            if (success) {
+                AlertDialog alertDialog = new AlertDialog.Builder(ForgetPassActivity.this).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Reset mật khẩu thành công. Hãy kiểm tra hộp thư lấy mật khẩu.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+
+            } else {
+                AlertDialog alertDialog = new AlertDialog.Builder(ForgetPassActivity.this).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Reset mật khẩu không thành công.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        }
     }
+
 }

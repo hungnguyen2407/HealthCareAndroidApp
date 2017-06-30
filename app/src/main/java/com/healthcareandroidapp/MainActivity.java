@@ -1,16 +1,21 @@
 package com.healthcareandroidapp;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +29,8 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity
@@ -54,12 +61,38 @@ public class MainActivity extends AppCompatActivity
         }
         createWorkSchedul = (Button) findViewById(R.id.create_work_shedule);
 
+        //Lay du lieu ve cac phong kham
+        SharedPreferences sp = getSharedPreferences("ClinicList", Context.MODE_PRIVATE);
+        String clinicInfo = sp.getString("info", "");
+        if (clinicInfo.equals("")) {
+            ClinicListTask clinicListTask = new ClinicListTask();
+            clinicListTask.execute((Void) null);
+        }
+
+
+        //Lay du lieu lich truc
+        String doctorID = null;
+        try {
+            doctorID = doctorJSON.getString("idDoctor");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
+        if (sp.getString("workScheduleList", "").equals("")) {
+            WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorID);
+            workScheduleTask.execute((Void) null);
+        } else
+            try {
+                workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         createWorkSchedul.setVisibility(View.GONE);
         TextView header = (TextView) findViewById(R.id.welcome);
         homeHanle();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         workScheduleTV = (TextView) findViewById(R.id.workScheduleTV);
-//        setSupportActionBar(toolbar);
+//       setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -117,6 +150,7 @@ public class MainActivity extends AppCompatActivity
         createWorkSchedul.setVisibility(View.GONE);
         ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
         workScheduleView.setVisibility(View.GONE);
+
         //Xu ly su kien nav lich lam viec
         if (id == R.id.nav_work_schedule) {
             homeContent.setVisibility(View.GONE);
@@ -126,35 +160,40 @@ public class MainActivity extends AppCompatActivity
             createWorkSchedul.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    findViewById(R.id.homeContent).setVisibility(View.GONE);
-                    findViewById(R.id.contentFrame).setVisibility(View.VISIBLE);
-                    findViewById(R.id.scrollViewWorkSchedule).setVisibility(View.GONE);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, new RegisterWorkScheduleFragment()).commit();
+                    if (workScheduleListJSONArray.length() > 7) {
+                        AlertDialog alertDialog1 = new AlertDialog.Builder(getParent()).create();
+                        alertDialog1.setTitle("Thông Báo");
+                        alertDialog1.setMessage("Vượt quá số buổi trực cho phép trong tuần");
+                        alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog1.show();
+                    } else {
+                        findViewById(R.id.homeContent).setVisibility(View.GONE);
+                        findViewById(R.id.contentFrame).setVisibility(View.VISIBLE);
+                        findViewById(R.id.scrollViewWorkSchedule).setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame, new RegisterWorkScheduleFragment()).commit();
+                    }
                 }
             });
-            String doctorID = null;
-            try {
-                doctorID = doctorJSON.getString("idDoctor");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
-            SharedPreferences sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
+
             try {
-                if (sp.getString("workScheduleList", "").equals("")) {
-                    WorkScheduleTask workScheduleTask = new WorkScheduleTask(doctorID);
-                    workScheduleTask.execute((Void) null);
-                } else
-                    workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
 
                 workScheduleListJSONArray = workScheduleListJSON.getJSONArray("scheduleList");
                 String text = "";
                 for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
                     JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
-                    text += "Thứ " + workScheduleJSON.getString("dates") + "\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) + "\nPhòng làm việc " + workScheduleJSON.getString("workspace") + "\n\n";
+                    String workspace = "";
+                    if (workScheduleJSON.getString("workspace").equals("") || workScheduleJSON.getString("workspace").equals("null")) {
+                        workspace = "Không có";
+                    }
+                    text += "Thứ " + workScheduleJSON.getString("dates") + "\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) + "\nPhòng làm việc " + workspace + "\n\n";
                 }
                 workScheduleTV.setText(text);
-                Log.v("TV", workScheduleTV.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -268,12 +307,30 @@ public class MainActivity extends AppCompatActivity
     private void homeHanle() {
         TextView homeContent = (TextView) findViewById(R.id.homeInfo);
         try {
+            String address = "";
             JSONObject specialityJSON = doctorJSON.getJSONObject("specialty");
-            homeContent.setText("\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSĐT: " + doctorJSON.getString("phone") + "\nEmail: " + doctorJSON.getString("email") + "\nĐịa chỉ: " + doctorJSON.getString("address") + "\nChuyên ngành: " + specialityJSON.getString("nameSpecialty") + "\nBằng cấp: " + doctorJSON.getString("degree") + "\nKinh nghiệm: " + doctorJSON.getString("experience"));
+            if (TextUtils.isEmpty(doctorJSON.getString("address")) || doctorJSON.getString("address").equals("null") || doctorJSON.getString("address") == null) {
+                address = "Không có";
+            } else
+                address = doctorJSON.getString("address");
+            Date date = new Date(Long.parseLong(doctorJSON.getString("birthDate")));
+            homeContent.setText("\nHọ tên: " + doctorJSON.getString("nameDoctor") + "\nSĐT: " + doctorJSON.getString("phone") + "\nEmail: " + doctorJSON.getString("email") + "\nNgày sinh: " + date.getDay() + " - " + date.getMonth() + " - " + (1900 + date.getYear()) + "\nĐịa chỉ: " + address + "\nChuyên ngành: " + specialityJSON.getString("nameSpecialty") + "\nBằng cấp: " + doctorJSON.getString("degree") + "\nKinh nghiệm: " + doctorJSON.getString("experience"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public class ClinicListTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            SharedPreferences sp = getSharedPreferences("ClinicList", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("info", Connection.getClinicList().toString());
+            editor.commit();
+            return true;
+        }
     }
 
     public void logout() {
@@ -281,6 +338,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("doctorJSON", "");
+        editor.commit();
+        sp = getSharedPreferences("workSchedule", MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putString("workScheduleList", "");
         editor.commit();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

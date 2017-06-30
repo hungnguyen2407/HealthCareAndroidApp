@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
      */
     private UserRegisterTask registerTask = null;
     private View progressBar, registerForm;
-    private TextView userNameView, passwordView, confirmPasswordView, nameView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateView;
+    private TextView userNameView, passwordView, confirmPasswordView, nameView, specialityView, degreeView, experienceView, emailView, doctorAddressView, phoneView, passportView, birthDateDateView, birthDateMonthView, birthDateYearView;
 
 
     @Override
@@ -129,7 +129,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         doctorAddressView = (TextView) findViewById(R.id.register_doctor_address);
         phoneView = (TextView) findViewById(R.id.register_phone);
         passportView = (TextView) findViewById(R.id.register_passport);
-        birthDateView = (TextView) findViewById(R.id.register_birth_date);
+        birthDateDateView = (TextView) findViewById(R.id.register_birth_date_date);
+        birthDateMonthView = (TextView) findViewById(R.id.register_birth_date_month);
+        birthDateYearView = (TextView) findViewById(R.id.register_birth_date_year);
         registerForm = findViewById(R.id.register_form);
         progressBar = findViewById(R.id.register_progress);
         progressBar.setVisibility(View.GONE);
@@ -204,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         doctorAddressView.setError(null);
         phoneView.setError(null);
         passportView.setError(null);
-        birthDateView.setError(null);
+        birthDateDateView.setError(null);
 
         // Store values at the time of the login attempt.
         String userName = this.userNameView.getText().toString();
@@ -218,7 +220,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         String doctorAddress = this.doctorAddressView.getText().toString();
         String phone = this.phoneView.getText().toString();
         String passport = this.passportView.getText().toString();
-        String birthDate = this.birthDateView.getText().toString();
+        String birthDateDate = this.birthDateDateView.getText().toString();
+        String birthDateMonth = this.birthDateMonthView.getText().toString();
+        String birthDateYear = this.birthDateYearView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -329,9 +333,19 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         }
 
         //Kiem tra dinh dang ngay sinh
-        if (TextUtils.isEmpty(birthDate)) {
-            this.birthDateView.setError(getString(R.string.register_error_field_required));
-            focusView = this.birthDateView;
+        if (TextUtils.isEmpty(birthDateDate)) {
+            this.birthDateDateView.setError(getString(R.string.register_error_field_required));
+            focusView = this.birthDateDateView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(birthDateMonth)) {
+            this.birthDateMonthView.setError(getString(R.string.register_error_field_required));
+            focusView = this.birthDateMonthView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(birthDateYear)) {
+            this.birthDateYearView.setError(getString(R.string.register_error_field_required));
+            focusView = this.birthDateYearView;
             cancel = true;
         }
         //Kiem tra xem co loi xay ra trong form dang ki
@@ -343,7 +357,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            registerTask = new UserRegisterTask(userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate);
+            registerTask = new UserRegisterTask(userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear);
             registerTask.execute((Void) null);
             return true;
         }
@@ -403,9 +417,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
+        private final String userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
 
-        UserRegisterTask(String userName, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
+        public UserRegisterTask(String userName, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
             this.userName = userName;
             this.password = password;
             this.name = name;
@@ -416,16 +430,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             this.doctorAddress = doctorAddress;
             this.phone = phone;
             this.passport = passport;
-            this.birthDate = birthDate;
+            this.birthDateDate = birthDateDate;
+            this.birthDateMonth = birthDateMonth;
+            this.birthDateYear = birthDateYear;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear)-1900);
+            String doctorInfo = "{\"specialty\":\"" + speciality + "\",\"userName\":\"" + userName + "\",\"name\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate.getTime() + "\"}";
 
-            String doctorInfo = "{\"nameSpecialty\":\""+speciality+"\",\"username\":\""+userName+"\",\"nameDoctor\":\""+name+"\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"phone\":\""+phone+"\",\"passport\":\""+passport+"\",\"degree\":\""+degree+"\",\"experience\":\""+experience+"\",\"doctorAddress\":\""+doctorAddress+"\"}";
-
-           //TODO
-            return  Connection.register(doctorInfo);
+            //TODO
+            return Connection.register(doctorInfo);
         }
 
         @Override
@@ -434,7 +450,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
-//                Toast.makeText(getApplicationContext(), "Đăng kí thành công", Toast.LENGTH_LONG).show();
                 AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
                 alertDialog.setTitle("Thông Báo");
                 alertDialog.setMessage("Đăng kí thành công");
@@ -445,10 +460,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                             }
                         });
                 alertDialog.show();
-                finish();
 
             } else {
-//                Toast.makeText(getApplicationContext(), "Đăng kí không thành công", Toast.LENGTH_LONG).show();
                 AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
                 alertDialog.setTitle("Thông Báo");
                 alertDialog.setMessage("Đăng kí không thành công");

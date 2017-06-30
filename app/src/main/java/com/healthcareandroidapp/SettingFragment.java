@@ -22,6 +22,8 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Created by hungnguyen on 23/06/2017.
  */
@@ -222,12 +224,11 @@ public class SettingFragment extends Fragment {
         //Gui thong tin cap nhat
         UserChangePasswordTask userPasswordTask = null;
         try {
-            Log.v("doctorJSON", doctorJSON.toString());
             JSONObject specialty = doctorJSON.getJSONObject("specialty");
             //TODO
-//            userPasswordTask = new UserChangePasswordTask(doctorJSON.getString("idDoctor"), newPassword, doctorJSON.getString("nameDoctor"), specialty.getString("nameSpecialty"), doctorJSON.getString("degree"), doctorJSON.getString("experience"), doctorJSON.getString("email"), doctorJSON.getString("address"), doctorJSON.getString("phone"), doctorJSON.getString("passport"), doctorJSON.getString("birthDate"));
+            userPasswordTask = new UserChangePasswordTask(doctorJSON.getString("idDoctor"), newPassword, doctorJSON.getString("nameDoctor"), specialty.getString("nameSpecialty"), doctorJSON.getString("degree"), doctorJSON.getString("experience"), doctorJSON.getString("email"), doctorJSON.getString("address"), doctorJSON.getString("phone"), doctorJSON.getString("passport"), doctorJSON.getString("birthDate"));
             userPasswordTask.execute((Void) null);
-            mainActivity.logout();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -322,8 +323,7 @@ public class SettingFragment extends Fragment {
 //                birthDateYear = doctorJSON.getString("birthDate");
                 //TODO
             }
-            if(!Validation.isBirthDate(birthDateDate,birthDateMonth,birthDateYear))
-            {
+            if (!Validation.isBirthDate(birthDateDate, birthDateMonth, birthDateYear)) {
                 return false;
             }
             //Gui thong tin cap nhat
@@ -339,9 +339,9 @@ public class SettingFragment extends Fragment {
 
     class UserChangePasswordTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
+        private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
 
-        UserChangePasswordTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
+        UserChangePasswordTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
             this.id = id;
             this.password = password;
             this.name = name;
@@ -352,15 +352,13 @@ public class SettingFragment extends Fragment {
             this.doctorAddress = doctorAddress;
             this.phone = phone;
             this.passport = passport;
-            this.birthDateDate = birthDateDate;
-            this.birthDateMonth = birthDateMonth;
-            this.birthDateYear = birthDateYear;
+            this.birthDate = birthDate;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            String doctorInfo = "{\"id\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDateDate\":\"" + birthDateDate + "\",\"birthDateMonth\":\"" + birthDateMonth + "\",\"birthDateYear\":\"" + birthDateYear + "\"}";
+            String doctorInfo = "{\"idDoctor\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate + "\"}";
             //Gui thong tin cap nhat
             return Connection.changeInfo(doctorInfo);
 
@@ -398,8 +396,10 @@ public class SettingFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            return Connection.changeInfo(null); //TODO
+            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear));
+            String doctorInfo = "{\"id\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate.getDate() + "\"}";
+            //Gui thong tin cap nhat
+            return Connection.changeInfo(doctorInfo); //TODO
         }
 
         @Override
