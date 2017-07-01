@@ -356,14 +356,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 //Luu du lieu dang nhap vao may
-                SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("doctorJSON", doctorJSON.toString());
-                editor.commit();
+                if (doctorJSON.toString().equals("{\"entity.Doctor\":null}")) {
+                    LoginActivity.this.password.setError("Thông tin tài khoản không tồn tại");
 
-                goMainActivity();
 
-                finish();
+                } else {
+                    SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("doctorJSON", doctorJSON.toString());
+                    editor.commit();
+
+                    goMainActivity();
+
+                    finish();
+                }
 
             } else {
                 LoginActivity.this.password.setError(getString(R.string.login_error_incorrect_password));

@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by hungnguyen on 29/06/2017.
@@ -35,18 +36,29 @@ import java.util.List;
 
 public class RegisterWorkScheduleFragment extends Fragment {
     private View registerWorkScheduleView;
-    public JSONObject clinicList;
+    public JSONObject clinicList, workScheduleListJSON;
+    public JSONArray workScheduleListJSONArray = null;
     private JSONObject doctorJSON = null;
     private final int MORNING_START_TIME = 7 * 3600, MORNING_STOP_TIME = 11 * 3600, AFTERNOON_START_TIME = 12 * 3600, AFTERNOON_STOP_TIME = 17 * 3600, NIGHT_START_TIME = 18 * 3600, NIGHT_STOP_TIME = 22 * 3600;
     private int startTime, stopTime;
     private String dates, workspace;
     private MainActivity mainActivity;
+    private boolean duplicate = false, result = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         registerWorkScheduleView = inflater.inflate(R.layout.register_workschedule_layout, container, false);
         mainActivity = (MainActivity) getActivity();
+        SharedPreferences sp = mainActivity.getSharedPreferences("workSchedule", Context.MODE_PRIVATE);
+        if (!sp.getString("workScheduleList", "").equals("")) {
+            try {
+                workScheduleListJSON = new JSONObject(sp.getString("workScheduleList", ""));
+                workScheduleListJSONArray = workScheduleListJSON.getJSONArray("scheduleList");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         doctorJSON = mainActivity.getDoctorJSON();
         registerWorkScheduleHandle();
         return registerWorkScheduleView;
@@ -149,7 +161,7 @@ public class RegisterWorkScheduleFragment extends Fragment {
             JSONArray clinicArray = clinicList.getJSONArray("clinicList");
             for (int i = 0; i < clinicArray.length(); i++) {
                 JSONObject clinic = clinicArray.getJSONObject(i);
-                list.add(clinic.getString("nameClinic") + " (" + clinic.getString("address") + ")");
+                list.add(clinic.getString("nameClinic") + " - " + clinic.getString("address") + "");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -187,7 +199,8 @@ public class RegisterWorkScheduleFragment extends Fragment {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                if (submit()) {
+                                result = submit();
+                                if (result) {
                                     AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog1.setTitle("Thông Báo");
                                     alertDialog1.setMessage("Đăng kí lịch thành công");
@@ -198,7 +211,20 @@ public class RegisterWorkScheduleFragment extends Fragment {
                                                 }
                                             });
                                     alertDialog1.show();
-                                } else {
+                                }
+
+                                if (duplicate) {
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
+                                    alertDialog1.setTitle("Thông Báo");
+                                    alertDialog1.setMessage("Lịch trực này đã được đăng kí");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog1.show();
+                                } else if(!result){
                                     AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog1.setTitle("Thông Báo");
                                     alertDialog1.setMessage("Đăng kí lịch không thành công");
@@ -237,7 +263,8 @@ public class RegisterWorkScheduleFragment extends Fragment {
 
         UserCreateWorkScheduleTask userCreateWorkScheduleTask = new UserCreateWorkScheduleTask(dates, startTime, stopTime, workspace);
         userCreateWorkScheduleTask.execute((Void) null);
-        return true;
+        result = !duplicate;
+        return result;
     }
 
 
@@ -256,9 +283,35 @@ public class RegisterWorkScheduleFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            String scheduleListString = "";
+            for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
+                try {
+                    JSONObject jsonObject = (JSONObject) workScheduleListJSONArray.get(i);
+                    if (jsonObject.getString("dates").equals(dates)) {
+                        duplicate = true;
+                        return false;
+                    }
+                    scheduleListString += jsonObject.toString() + ",";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            String scheduleString = "{\"dates\":\"" + dates + "\",\"startTime\":\"" + startTime + "\",\"stopTime\":\"" + stopTime + "\",\"workspace\":\"" + workspace + "\"}";
+            scheduleListString += scheduleString;
+
+
             String result = null;
             try {
-                result = Connection.registWorkSchedule(doctorJSON.getString("idDoctor"), dates, startTime, stopTime, workspace);
+
+                result = Connection.registWorkSchedule(doctorJSON.getString("idDoctor"), scheduleListString);
+                SharedPreferences sp = mainActivity.getSharedPreferences("workSchedule", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+
+                String scheduleListJSON = "{\"scheduleList\":[" + scheduleListString + "]}";
+
+                editor.putString("workScheduleList", scheduleListJSON);
+                editor.commit();
+                mainActivity.setWorkScheduleListJSON(new JSONObject(scheduleListJSON));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

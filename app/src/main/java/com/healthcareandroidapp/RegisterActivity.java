@@ -348,6 +348,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             focusView = this.birthDateYearView;
             cancel = true;
         }
+        if (!Validation.isBirthDate(birthDateDate, birthDateMonth, birthDateYear)) {
+            birthDateDateView.setError("Ngày tháng không hợp lệ");
+            focusView = this.birthDateDateView;
+            cancel = true;
+        }
         //Kiem tra xem co loi xay ra trong form dang ki
         if (cancel) {
             // There was an error; don't attempt login and focus the first

@@ -1,5 +1,6 @@
 package com.healthcareandroidapp;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -43,6 +45,7 @@ public class Connection {
         try {
             HttpURLConnection urlConnection = null;
             URL url = new URL(host + "/doctor/schedule/" + doctorID);
+            Log.v("id",doctorID);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             InputStreamReader inputStreamReader = new InputStreamReader((InputStream) urlConnection.getContent());
@@ -120,7 +123,7 @@ public class Connection {
             list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
             list.add(new BasicNameValuePair("birthDate", doctorJSON.getString("birthDate")));
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
-            System.out.println("List: " + list.toString());
+
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
             s = readResponse(httpResponse);
@@ -165,17 +168,17 @@ public class Connection {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(host + "/doctor/update/info/" + doctorJSON.getString("idDoctor"));
             List<NameValuePair> list = new ArrayList<>();
-            list.add(new BasicNameValuePair("id", doctorJSON.getString("idDoctor")));
-            list.add(new BasicNameValuePair("password", doctorJSON.getString("password")));
+            list.add(new BasicNameValuePair("passwords", doctorJSON.getString("password")));
             list.add(new BasicNameValuePair("name", doctorJSON.getString("nameDoctor")));
             list.add(new BasicNameValuePair("specialty", doctorJSON.getString("nameSpecialty")));
-            list.add(new BasicNameValuePair("degree", doctorJSON.getString("degree")));
+//            list.add(new BasicNameValuePair("degree", doctorJSON.getString("degree")));
             list.add(new BasicNameValuePair("experience", doctorJSON.getString("experience")));
-            list.add(new BasicNameValuePair("email", doctorJSON.getString("email")));
-            list.add(new BasicNameValuePair("doctorAddress", doctorJSON.getString("doctorAddress")));
-            list.add(new BasicNameValuePair("phone", doctorJSON.getString("phone")));
-            list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
-            list.add(new BasicNameValuePair("birthDate", doctorJSON.getString("birthDate")));
+//            list.add(new BasicNameValuePair("email", doctorJSON.getString("email")));
+//            list.add(new BasicNameValuePair("birthDate", doctorJSON.getString("birthDate")));
+//            list.add(new BasicNameValuePair("doctorAddress", doctorJSON.getString("doctorAddress")));
+//            list.add(new BasicNameValuePair("phone", doctorJSON.getString("phone")));
+//            list.add(new BasicNameValuePair("passport", doctorJSON.getString("passport")));
+            Log.v("list", list.toString());
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -194,7 +197,7 @@ public class Connection {
         String s = "";
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(host + "/doctor/forgetpassword");
+            HttpPut httpPost = new HttpPut(host + "/doctor/forgetpassword");
             List<NameValuePair> list = new ArrayList<NameValuePair>();
             list.add(new BasicNameValuePair("email", email));
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
@@ -205,6 +208,7 @@ public class Connection {
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println("Complete");
         return !s.equals("");
     }
 
@@ -257,15 +261,16 @@ public class Connection {
         return clinicListJSON;
     }
 
-    public static String registWorkSchedule(String idDoctor, String dates, int startTime, int stopTime, String workspace) {
-        String s = "", scheduleList = "{\"scheduleList\":[{\"idSchedule\":\""+ new Random().nextInt(100000) +"\",\"dates\":\""+dates+"\",\"startTime\":\""+startTime+"\",\"stopTime\":\""+stopTime+"\",\"workspace\":\""+workspace+"\"}]}";
+    public static String registWorkSchedule(String idDoctor, String scheduleList) {
+        String s = "", scheduleListJSON = "{\"scheduleList\":[" + scheduleList + "]}";
         //TODO: Chua duoc
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://healthcare21617.azurewebsites.net/rest/schedules/registry/list");
+            HttpPost httpPost = new HttpPost(host + "/schedules/registry/list");
             List<NameValuePair> list = new ArrayList<NameValuePair>();
             list.add(new BasicNameValuePair("idDoctor", idDoctor));
-            list.add(new BasicNameValuePair("scheduleList", scheduleList));
+            list.add(new BasicNameValuePair("scheduleList", scheduleListJSON));
+            Log.v("workScheduleList", scheduleListJSON);
             httpPost.setEntity(new UrlEncodedFormEntity(list, "utf-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
 

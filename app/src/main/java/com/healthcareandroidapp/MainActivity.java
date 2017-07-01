@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity
             clinicListTask.execute((Void) null);
         }
 
-
         //Lay du lieu lich truc
         String doctorID = null;
         try {
@@ -104,6 +103,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void setWorkScheduleListJSON(JSONObject workScheduleListJSON) {
+        this.workScheduleListJSON = workScheduleListJSON;
+        return;
+    }
 
     @Override
     public void onBackPressed() {
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
         header.setVisibility(View.GONE);
         createWorkSchedul.setVisibility(View.GONE);
-        ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
+        final ScrollView workScheduleView = (ScrollView) findViewById(R.id.scrollViewWorkSchedule);
         workScheduleView.setVisibility(View.GONE);
 
         //Xu ly su kien nav lich lam viec
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     if (workScheduleListJSONArray.length() > 7) {
-                        AlertDialog alertDialog1 = new AlertDialog.Builder(getParent()).create();
+                        AlertDialog alertDialog1 = new AlertDialog.Builder(workScheduleView.getContext()).create();
                         alertDialog1.setTitle("Thông Báo");
                         alertDialog1.setMessage("Vượt quá số buổi trực cho phép trong tuần");
                         alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -187,13 +190,41 @@ public class MainActivity extends AppCompatActivity
                 String text = "";
                 for (int i = 0; i < workScheduleListJSONArray.length(); i++) {
                     JSONObject workScheduleJSON = (JSONObject) workScheduleListJSONArray.get(i);
-                    String workspace = "";
+                    String workspace = workScheduleJSON.getString("workspace");
                     if (workScheduleJSON.getString("workspace").equals("") || workScheduleJSON.getString("workspace").equals("null")) {
                         workspace = "Không có";
                     }
-                    text += "Thứ " + workScheduleJSON.getString("dates") + "\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) + "\nPhòng làm việc " + workspace + "\n\n";
+                    String dates = "";
+                    switch (workScheduleJSON.getString("dates").toLowerCase()) {
+                        case "monday":
+                            dates = "thứ 2";
+                            break;
+                        case "tuesday":
+                            dates = "thứ 3";
+                            break;
+                        case "wednesday":
+                            dates = "thứ 4";
+                            break;
+                        case "thursday":
+                            dates = "thứ 5";
+                            break;
+                        case "friday":
+                            dates = "thứ 6";
+                            break;
+                        case "saturday":
+                            dates = "thứ 7";
+                            break;
+                        case "sunday":
+                            dates = "chủ nhật";
+                            break;
+
+                    }
+                    text += "Ngày " + dates + "\nGiờ làm việc từ " + getTime(Integer.parseInt(workScheduleJSON.getString("startTime"))) + " đến " + getTime(Integer.parseInt(workScheduleJSON.getString("stopTime"))) + "\nPhòng làm việc " + workspace + "\n\n";
                 }
-                workScheduleTV.setText(text);
+                if (workScheduleListJSONArray.length() < 1) {
+                    workScheduleTV.setText("Chưa có lịch trực");
+                } else
+                    workScheduleTV.setText(text);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -280,7 +311,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
 
             workScheduleListJSON = Connection.getWorkSchedule(doctorID);
             SharedPreferences sp = getSharedPreferences("workSchedule", MODE_PRIVATE);

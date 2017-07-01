@@ -180,52 +180,62 @@ public class SettingFragment extends Fragment {
         EditText edtNewPassword = (EditText) settingView.findViewById(R.id.edtNewPassword);
         String newPassword = edtNewPassword.getText().toString();
         EditText edtConfirmNewPassword = (EditText) settingView.findViewById(R.id.edtConfirmNewPassword);
-        String confirmNewPassword = edtNewPassword.getText().toString();
+        String confirmNewPassword = edtConfirmNewPassword.getText().toString();
         EditText edtOldPassword = (EditText) settingView.findViewById(R.id.edtOldPassword);
-        String oldPassword = edtNewPassword.getText().toString();
+        String oldPassword = edtOldPassword.getText().toString();
+        String realPassword = "";
+        try {
+            realPassword = doctorJSON.getString("passwords");
 
-        EditText focusEdit = null;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         boolean cancel = false;
+
         if (TextUtils.isEmpty(oldPassword)) {
             edtOldPassword.setError(getString(R.string.register_error_field_required));
-            focusEdit = edtOldPassword;
             cancel = true;
 
         } else if (!Validation.isPasswordValid(oldPassword)) {
             edtOldPassword.setError(getString(R.string.register_error_invalid_password));
-            focusEdit = edtOldPassword;
+            cancel = true;
+        } else if (!oldPassword.equals(realPassword)) {
+            edtOldPassword.setError("Sai mật khẩu");
             cancel = true;
         }
 
         if (TextUtils.isEmpty(newPassword)) {
             edtNewPassword.setError(getString(R.string.register_error_field_required));
-            focusEdit = edtNewPassword;
             cancel = true;
         } else if (!Validation.isPasswordValid(newPassword)) {
             edtNewPassword.setError(getString(R.string.register_error_invalid_password));
-            focusEdit = edtNewPassword;
+            cancel = true;
+        } else if (newPassword.equals(realPassword)) {
+            edtNewPassword.setError("Trùng với mật khẩu cũ");
+            cancel = true;
+        } else if (newPassword.equals(oldPassword)) {
+            edtNewPassword.setError("Trùng với mật khẩu xác nhận");
             cancel = true;
         }
 
         if (TextUtils.isEmpty(confirmNewPassword)) {
             edtConfirmNewPassword.setError(getString(R.string.register_error_field_required));
-            focusEdit = edtConfirmNewPassword;
             cancel = true;
         } else if (!Validation.isPasswordValid(confirmNewPassword)) {
             edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_password));
-            focusEdit = edtConfirmNewPassword;
             cancel = true;
         } else if (!confirmNewPassword.equals(newPassword)) {
             edtConfirmNewPassword.setError(getString(R.string.register_error_invalid_confirm_password));
-            focusEdit = edtConfirmNewPassword;
             cancel = true;
         }
 
+
+        if (cancel)
+            return false;
         //Gui thong tin cap nhat
         UserChangePasswordTask userPasswordTask = null;
         try {
             JSONObject specialty = doctorJSON.getJSONObject("specialty");
-            //TODO
             userPasswordTask = new UserChangePasswordTask(doctorJSON.getString("idDoctor"), newPassword, doctorJSON.getString("nameDoctor"), specialty.getString("nameSpecialty"), doctorJSON.getString("degree"), doctorJSON.getString("experience"), doctorJSON.getString("email"), doctorJSON.getString("address"), doctorJSON.getString("phone"), doctorJSON.getString("passport"), doctorJSON.getString("birthDate"));
             userPasswordTask.execute((Void) null);
 
@@ -250,20 +260,32 @@ public class SettingFragment extends Fragment {
         EditText edtBirthDateMonth = (EditText) settingView.findViewById(R.id.edtBirthDateMonth);
         EditText edtBirthDateYear = (EditText) settingView.findViewById(R.id.edtBirthDateYear);
         try {
+            String realPassword = "";
+            try {
+                realPassword = doctorJSON.getString("passwords");
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            boolean cancel = false;
             String password = edtPassword.getText().toString();
             if (TextUtils.isEmpty(password)) {
-                edtPassword.setError(getString(R.string.error_field_required));
-                return false;
-            } else if (!password.equals(doctorJSON.getString("passwords"))) {
+                edtPassword.setError(getString(R.string.register_error_field_required));
+                cancel = true;
+
+            } else if (!Validation.isPasswordValid(password)) {
+                edtPassword.setError(getString(R.string.register_error_invalid_password));
+                cancel = true;
+            } else if (!password.equals(realPassword)) {
                 edtPassword.setError("Sai mật khẩu");
-                return false;
+                cancel = true;
             }
 
             String id = doctorJSON.getString("idDoctor");
             String name = edtName.getText().toString();
             if (TextUtils.isEmpty(name)) {
                 name = doctorJSON.getString("nameDoctor");
+
             }
 
             JSONObject specialtyJSON = doctorJSON.getJSONObject("specialty");
@@ -303,34 +325,26 @@ public class SettingFragment extends Fragment {
             }
 
             String birthDateDate = edtBirthDateDate.getText().toString();
-            if (TextUtils.isEmpty(birthDateDate)) {
-                edtBirthDateDate.setError(getString(R.string.error_field_required));
-                return false;
-//                birthDateDate = doctorJSON.getString("birthDate");
-                //TODO
-            }
+
             String birthDateMonth = edtBirthDateMonth.getText().toString();
-            if (TextUtils.isEmpty(birthDateMonth)) {
-                edtBirthDateMonth.setError(getString(R.string.error_field_required));
-                return false;
-//                birthDateMonth = doctorJSON.getString("birthDate");
-                //TODO
-            }
+
             String birthDateYear = edtBirthDateYear.getText().toString();
-            if (TextUtils.isEmpty(birthDateYear)) {
-                edtBirthDateYear.setError(getString(R.string.error_field_required));
-                return false;
-//                birthDateYear = doctorJSON.getString("birthDate");
-                //TODO
-            }
-            if (!Validation.isBirthDate(birthDateDate, birthDateMonth, birthDateYear)) {
-                return false;
-            }
+            if (!TextUtils.isEmpty(birthDateDate) || !TextUtils.isEmpty(birthDateMonth) || !TextUtils.isEmpty(birthDateYear))
+                if (!Validation.isBirthDate(birthDateDate, birthDateMonth, birthDateYear)) {
+                    edtBirthDateDate.setError("Ngày tháng không hợp lệ");
+                    cancel = true;
+                }
+            else{
+
+                }
             //Gui thong tin cap nhat
+
+            if (cancel)
+                return false;
 
             UserChangeInfoTask userChangeInfoTask = new UserChangeInfoTask(id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear);
             userChangeInfoTask.execute((Void) null);
-
+            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -341,7 +355,7 @@ public class SettingFragment extends Fragment {
 
         private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDate;
 
-        UserChangePasswordTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
+        public UserChangePasswordTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDate) {
             this.id = id;
             this.password = password;
             this.name = name;
@@ -358,7 +372,7 @@ public class SettingFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            String doctorInfo = "{\"idDoctor\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate + "\"}";
+            String doctorInfo = "{\"idDoctor\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\"}";
             //Gui thong tin cap nhat
             return Connection.changeInfo(doctorInfo);
 
@@ -377,7 +391,7 @@ public class SettingFragment extends Fragment {
     class UserChangeInfoTask extends AsyncTask<Void, Void, Boolean> {
         private final String id, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
 
-        UserChangeInfoTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
+        public UserChangeInfoTask(String id, String password, String name, String speciality, String degree, String experience, String email, String doctorAddress, String phone, String passport, String birthDateDate, String birthDateMonth, String birthDateYear) {
             this.id = id;
 
             this.password = password;
@@ -396,10 +410,11 @@ public class SettingFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear));
-            String doctorInfo = "{\"id\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate.getDate() + "\"}";
+//            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear));
+            String doctorInfo = "{\"idDoctor\":\"" + id + "\",\"nameSpecialty\":\"" + speciality + "\",\"nameDoctor\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\"}";
             //Gui thong tin cap nhat
-            return Connection.changeInfo(doctorInfo); //TODO
+            Connection.changeInfo(doctorInfo);
+            return true;
         }
 
         @Override
