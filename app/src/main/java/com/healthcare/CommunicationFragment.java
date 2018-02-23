@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

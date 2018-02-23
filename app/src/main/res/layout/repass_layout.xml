@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.healthcareandroidapp.ForgetPassActivity">
+    tools:context="com.healthcare.ForgetPassActivity">
 
 
     <TextView
@@ -21,11 +21,11 @@
 
     <ProgressBar
         android:id="@+id/forget_pass_progress"
-        android:visibility="gone"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp" />
+        android:layout_margin="50dp"
+        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/forget_form"

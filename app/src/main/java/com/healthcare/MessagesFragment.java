@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

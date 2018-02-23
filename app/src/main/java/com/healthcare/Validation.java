@@ -1,7 +1,4 @@
-package com.healthcareandroidapp;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+package com.healthcare;
 
 /**
  * Created by hungnguyen on 23/06/2017.

@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,19 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,18 +22,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by hungnguyen on 29/06/2017.
  */
 
 public class RegisterWorkScheduleFragment extends Fragment {
-    private View registerWorkScheduleView;
+    private final int MORNING_START_TIME = 7 * 3600, MORNING_STOP_TIME = 11 * 3600, AFTERNOON_START_TIME = 12 * 3600, AFTERNOON_STOP_TIME = 17 * 3600, NIGHT_START_TIME = 18 * 3600, NIGHT_STOP_TIME = 22 * 3600;
     public JSONObject clinicList, workScheduleListJSON;
     public JSONArray workScheduleListJSONArray = null;
+    private View registerWorkScheduleView;
     private JSONObject doctorJSON = null;
-    private final int MORNING_START_TIME = 7 * 3600, MORNING_STOP_TIME = 11 * 3600, AFTERNOON_START_TIME = 12 * 3600, AFTERNOON_STOP_TIME = 17 * 3600, NIGHT_START_TIME = 18 * 3600, NIGHT_STOP_TIME = 22 * 3600;
     private int startTime, stopTime;
     private String dates, workspace;
     private MainActivity mainActivity;
@@ -189,7 +182,7 @@ public class RegisterWorkScheduleFragment extends Fragment {
             }
         });
 
-        Button btnRegister = (Button) registerWorkScheduleView.findViewById(R.id.btnRegisterWorkSchedule);
+        Button btnRegister = (Button) registerWorkScheduleView.findViewById(R.id.btnAcceptRegisterWorkSchedule);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +217,7 @@ public class RegisterWorkScheduleFragment extends Fragment {
                                                 }
                                             });
                                     alertDialog1.show();
-                                } else if(!result){
+                                } else if (!result) {
                                     AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog1.setTitle("Thông Báo");
                                     alertDialog1.setMessage("Đăng kí lịch không thành công");
@@ -247,7 +240,13 @@ public class RegisterWorkScheduleFragment extends Fragment {
                 alertDialog.show();
             }
         });
-
+        Button back = (Button) registerWorkScheduleView.findViewById(R.id.btnBackToWorkSchedule);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.contentFrame, new WorkScheduleFragment()).commit();
+            }
+        });
 //        Button btnAddSchedule = (Button) registerWorkScheduleView.findViewById(R.id.addSchedule);
 //        btnAddSchedule.setOnClickListener(new View.OnClickListener() {
 //            @Override

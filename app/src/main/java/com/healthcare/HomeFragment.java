@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,18 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by hungnguyen on 26/06/2017.
+ * Created by hungnguyen on 23/02/2018.
  */
 
-public class InfoFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    private View infoView;
+    private View homeView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        infoView = inflater.inflate(R.layout.info_layout, container, false);
-        return infoView;
+        homeView = inflater.inflate(R.layout.home_layout, container, false);
+
+
+        return homeView;
     }
 }

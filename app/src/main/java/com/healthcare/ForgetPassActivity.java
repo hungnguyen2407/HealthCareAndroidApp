@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,7 +25,7 @@ public class ForgetPassActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget_pass);
+        setContentView(R.layout.repass_layout);
         forgetForm = (ScrollView) findViewById(R.id.forget_form);
         emailView = (EditText) findViewById(R.id.email_forget_pass);
 

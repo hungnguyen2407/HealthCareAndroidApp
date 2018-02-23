@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,7 +8,6 @@ import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -20,21 +19,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class RegisterActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -54,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.register_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         final Button registerButton = (Button) findViewById(R.id.btnSubmit_SignUp);
@@ -68,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 //                AlertDialog alertDialog = new AlertDialog.Builder(getApplication()).create();
 //                alertDialog.setTitle("Thông Báo");
 //                alertDialog.setMessage("Xác nhận muốn đăng kí tài khoản");
-//                alertDialog.setContentView(R.layout.activity_register);
+//                alertDialog.setContentView(R.layout.register_layout);
 //                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 //                        new DialogInterface.OnClickListener() {
 //                            public void onClick(DialogInterface dialog, int which) {
@@ -420,6 +410,29 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     }
 
+    public static class RegisterStatusDialogFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.register_success_messages)
+                    .setPositiveButton(R.string.register_return_login_action, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(null, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton(R.string.register_close_dialog, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String userName, password, name, speciality, degree, experience, email, doctorAddress, phone, passport, birthDateDate, birthDateMonth, birthDateYear;
@@ -487,29 +500,5 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         }
 
 
-    }
-
-
-    public static class RegisterStatusDialogFragment extends DialogFragment {
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.register_success_messages)
-                    .setPositiveButton(R.string.register_return_login_action, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(null, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .setNegativeButton(R.string.register_close_dialog, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
     }
 }

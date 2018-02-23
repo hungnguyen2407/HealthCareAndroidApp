@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.healthcareandroidapp.MainActivity">
+    tools:context="com.healthcare.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -18,20 +18,35 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <Button
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="left">
+
+                <TextView
+                    android:id="@+id/header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Header"
+                    android:textAlignment="center"
+                    android:textSize="60px" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/doctorInfoToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="+"
-                android:id="@+id/create_work_shedule"
-                android:background="@android:color/transparent"
+                android:layout_marginRight="20px"
+                android:background="@drawable/ic_account_circle_white_24dp"
                 android:textColor="@android:color/white"
-                android:textSize="30dp"/>
+                android:textSize="20dp" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_nav" />
+    <include layout="@layout/main_content" />
 
     <!--<android.support.design.widget.FloatingActionButton-->
     <!--android:id="@+id/fab"-->

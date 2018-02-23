@@ -8,15 +8,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Đăng Kí Lịch"
-            android:textSize="30dp" />
-
-
         <LinearLayout
             android:id="@+id/scheduleListLayout"
             android:layout_width="match_parent"
@@ -76,22 +67,40 @@
         </LinearLayout>
 
         <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Thêm Lịch"-->
-            <!--android:textSize="20dp"-->
-            <!--android:layout_margin="20dp"-->
-            <!--android:id="@+id/addSchedule"-->
-            <!--/>-->
-        <Button
-            android:id="@+id/btnRegisterWorkSchedule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@color/colorPrimary"
-            android:text="Xác Nhận"
-            android:textColor="@android:color/white"
-            android:textSize="20dp" />
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Thêm Lịch"-->
+        <!--android:textSize="20dp"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:id="@+id/addSchedule"-->
+        <!--/>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBackToWorkSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_margin="20dp"
+                android:text="Huỷ bỏ"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btnAcceptRegisterWorkSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_margin="20dp"
+                android:background="@color/colorPrimary"
+                android:text="Đồng ý"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>

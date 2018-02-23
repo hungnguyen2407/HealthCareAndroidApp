@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ScrollView
@@ -11,22 +12,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:text="Danh Sách Đặt Khám"
-            android:gravity="center"
-            />
-        <TextView
-            android:id="@+id/content_patient_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bệnh nhân: Nguyễn Văn Thái Hoa\nTriệu chứng: cảm sốt, sổ mũi, đau mắt đỏ, hỏ\nThời gian hẹn khám: 8h30 thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM).\n\n\nBệnh nhân: Trần Văn Nam\nTriệu chứng: nổi nốt nhỏ, đỏ ngứa.\nThời gian hẹn khám: 9 thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM).\n\n\n
+
+            <TextView
+                android:id="@+id/content_patient_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Bệnh nhân: Nguyễn Văn Thái Hoa\nTriệu chứng: cảm sốt, sổ mũi, đau mắt đỏ, hỏ\nThời gian hẹn khám: 8h30 thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM).\n\n\nBệnh nhân: Trần Văn Nam\nTriệu chứng: nổi nốt nhỏ, đỏ ngứa.\nThời gian hẹn khám: 9 thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM).\n\n\n
 Bệnh nhân: Nguyễn Thị Thuý Quỳnh\nTriệu chứng: sốt, buồn nôn, mệt mỏi, chóng mặt\nThời gian hẹn khám: 9h30 thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM)\n\n\n
 Bệnh nhân: Nguyễn Ngọc Bảo Nhi\nTriệu chứng: sổ mũi, sốt, đau đầu\nThời gian hẹn khám: 10h thứ 3 (4/7/2017)\nBác sĩ: Nguyễn Hoàng Hưng \nPhòng khám: An Linh (Linh Trung - Thủ Đức - TP.HCM)"
-            android:layout_margin="20dp"
-            android:textSize="20dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.healthcareandroidapp;
+package com.healthcare;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -29,7 +28,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_layout);
 
         //Lay thong tin dang nhap trong may
         SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
@@ -313,6 +311,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         userName.setAdapter(adapter);
     }
 
+    private void forget() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(loginForm.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        Intent intent = new Intent(this, ForgetPassActivity.class);
+        startActivity(intent);
+    }
+
+    private void goMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("doctorInfo", doctorJSON.toString());
+        startActivity(intent);
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -384,20 +395,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-    }
-
-    private void forget() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(loginForm.getWindowToken(),
-                InputMethodManager.RESULT_UNCHANGED_SHOWN);
-        Intent intent = new Intent(this, ForgetPassActivity.class);
-        startActivity(intent);
-    }
-
-    private void goMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("doctorInfo", doctorJSON.toString());
-        startActivity(intent);
     }
 }
 
