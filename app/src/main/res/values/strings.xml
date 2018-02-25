@@ -19,8 +19,8 @@
     <string name="title_activity_login">Đăng nhập</string>
 
     <!--String dùng cho registe UI -->
-    <string name="register_header">Đăng Kí</string>
-    <string name="submit_register_action">Tạo Tài Khoản</string>
+    <!--<string name="register_header">Đăng Kí</string>-->
+    <string name="submit_register_action">Đăng kí</string>
     <string name="register_name">Họ tên</string>
     <string name="register_user_name">Tên tài khoản</string>
     <string name="register_password">Mật khẩu</string>

@@ -17,11 +17,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -43,9 +43,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         final Button registerButton = (Button) findViewById(R.id.btnSubmit_SignUp);
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -54,51 +54,51 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 InputMethodManager imm = (InputMethodManager) getSystemService(RegisterActivity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(registerButton.getWindowToken(),
                         InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                //Thuc hien qua trinh gui du lieu dang ki len server
-//                AlertDialog alertDialog = new AlertDialog.Builder(getApplication()).create();
-//                alertDialog.setTitle("Thông Báo");
-//                alertDialog.setMessage("Xác nhận muốn đăng kí tài khoản");
-//                alertDialog.setContentView(R.layout.register_layout);
-//                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (register()) {
-//                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
-//                                    alertDialog1.setTitle("Thông Báo");
-//                                    alertDialog1.setMessage("Đăng kí thành công");
-//                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                                            new DialogInterface.OnClickListener() {
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    dialog.dismiss();
-//                                                }
-//                                            });
-//                                    alertDialog1.show();
-//                                } else {
-//                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
-//                                    alertDialog1.setTitle("Thông Báo");
-//                                    alertDialog1.setMessage("Đăng kí không thành công");
-//                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                                            new DialogInterface.OnClickListener() {
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    dialog.dismiss();
-//                                                }
-//                                            });
-//                                    alertDialog1.show();
-//                                }
-//                            }
-//                        });
-//                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Huỷ bỏ",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog.show();
+//                Thuc hien qua trinh gui du lieu dang ki len server
+                AlertDialog alertDialog = new AlertDialog.Builder(getApplication()).create();
+                alertDialog.setTitle("Thông Báo");
+                alertDialog.setMessage("Xác nhận muốn đăng kí tài khoản");
+                alertDialog.setContentView(R.layout.register_layout);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (register()) {
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
+                                    alertDialog1.setTitle("Thông Báo");
+                                    alertDialog1.setMessage("Đăng kí thành công");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog1.show();
+                                } else {
+                                    AlertDialog alertDialog1 = new AlertDialog.Builder(getApplication()).create();
+                                    alertDialog1.setTitle("Thông Báo");
+                                    alertDialog1.setMessage("Đăng kí không thành công");
+                                    alertDialog1.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog1.show();
+                                }
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Huỷ bỏ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
                 register();
             }
         });
 
-        Button loginButton = (Button) findViewById(R.id.btnReturnLogin);
+        ImageButton loginButton = (ImageButton) findViewById(R.id.btnReturnLogin);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -410,6 +410,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     }
 
+    public void showTimePickerDialog(View v) {
+        android.app.DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
+    }
+
     public static class RegisterStatusDialogFragment extends DialogFragment {
         @NonNull
         @Override
@@ -455,7 +460,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear)-1900);
+            Date birthDate = new Date(Integer.parseInt(birthDateDate), Integer.parseInt(birthDateMonth), Integer.parseInt(birthDateYear) - 1900);
             String doctorInfo = "{\"specialty\":\"" + speciality + "\",\"userName\":\"" + userName + "\",\"name\":\"" + name + "\",\"password\":\"" + password + "\",\"email\":\"" + email + "\",\"phone\":\"" + phone + "\",\"passport\":\"" + passport + "\",\"degree\":\"" + degree + "\",\"experience\":\"" + experience + "\",\"doctorAddress\":\"" + doctorAddress + "\",\"birthDate\":\"" + birthDate.getTime() + "\"}";
 
             //TODO

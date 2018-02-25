@@ -7,15 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 
 public class ForgetPassActivity extends AppCompatActivity {
@@ -26,7 +26,7 @@ public class ForgetPassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repass_layout);
-        forgetForm = (ScrollView) findViewById(R.id.forget_form);
+        forgetForm = findViewById(R.id.forget_form);
         emailView = (EditText) findViewById(R.id.email_forget_pass);
 
         final Button btnSubmit = (Button) findViewById(R.id.submit_forget_password_button);
@@ -37,7 +37,7 @@ public class ForgetPassActivity extends AppCompatActivity {
                 submit();
             }
         });
-        Button btnReturn = (Button) findViewById(R.id.btnReturnLoginForgetPass);
+        ImageButton btnReturn = (ImageButton) findViewById(R.id.btnReturnLoginForgetPass);
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,7 @@ public class ForgetPassActivity extends AppCompatActivity {
         if (cancel) {
             focus.requestFocus();
         } else {
-            progressBar = (ProgressBar) findViewById(R.id.forget_pass_progress);
+            progressBar = findViewById(R.id.forget_pass_progress);
             showProgress(true);
             InputMethodManager imm = (InputMethodManager) getSystemService(ForgetPassActivity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(emailView.getWindowToken(),

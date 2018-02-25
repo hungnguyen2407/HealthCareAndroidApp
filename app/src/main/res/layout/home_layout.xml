@@ -5,11 +5,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home" />
+            android:layout_gravity="center"
+            android:text="Tổng Quan"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Số giờ làm việc trong tuần"
+            android:textSize="30px" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Số bệnh nhân đã khám"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Số "
+            android:textSize="30px" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

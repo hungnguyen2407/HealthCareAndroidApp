@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,15 +12,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.healthcare.RegisterActivity">
 
-
-    <TextView
-        android:id="@+id/tvDangKy"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/btnReturnLogin"
+        style="?android:textAppearanceSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/register_header"
-        android:textColor="@color/colorAccent"
-        android:textSize="30dp" />
+        android:layout_gravity="left"
+        android:background="@drawable/ic_arrow_back_black_24dp" />
+
 
     <ProgressBar
         android:id="@+id/register_progress"
@@ -115,7 +115,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_birth_day"/>
+                android:text="@string/register_birth_day" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="showTimePickerDialog"
+                android:text="Time Picker" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,16 +234,9 @@
                 android:background="@color/colorPrimary"
                 android:text="@string/submit_register_action"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnReturnLogin"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/register_return_login_action"
-                android:textStyle="bold"/>
+
         </LinearLayout>
 
     </ScrollView>
