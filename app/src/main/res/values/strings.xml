@@ -20,7 +20,7 @@
 
     <!--String dùng cho registe UI -->
     <!--<string name="register_header">Đăng Kí</string>-->
-    <string name="submit_register_action">Đăng kí</string>
+    <string name="submit_register_action">Đăng Kí</string>
     <string name="register_name">Họ tên</string>
     <string name="register_user_name">Tên tài khoản</string>
     <string name="register_password">Mật khẩu</string>
@@ -92,8 +92,8 @@
     <string name="times_afternoon">Buổi Trưa (12h - 17h)</string>
     <string name="times_night">Buổi Tối (18h - 22h)</string>
     <!-- String dùng cho sign in UI -->
-    <string name="login_user_name">Tài khoản</string>
-    <string name="login_password">Mật khẩu</string>
+    <string name="login_hint_user_name">Tài khoản</string>
+    <string name="login_hint_password">Mật khẩu</string>
     <string name="login_submit_action">Đăng Nhập</string>
     <string name="login_error_invalid_user_name">Tên đăng nhập phải từ 6 kí tự trở lên</string>
     <string name="login_error_invalid_password">Mật khẩu phải từ 4 kí tự trở lên</string>
@@ -104,7 +104,7 @@
     </string>
 
     <!--String cho forget pass UI-->
-    <string name="forget_password_action">Quên Mật Khẩu</string>
+    <string name="forget_password_action">Lấy lại mật khẩu</string>
     <string name="forget_password_header">Lấy Lại Mật Khẩu</string>
     <string name="forget_password_submit_action">Xác nhận</string>
     <string name="forget_password_email">Email</string>
